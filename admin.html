@@ -1523,42 +1523,36 @@
     @media(max-width:899px) { .top { background:rgba(36,72,61,.97) !important; border-color:rgba(255,255,255,.12) !important; } .top-building strong,#pageTitle,.top p { color:#fff !important; } .cash-flow-chart { grid-template-columns:repeat(12,minmax(38px,1fr)); gap:5px; } }
     @media(max-width:520px) { .admin-scope-note { font-size:11px !important; } .cash-flow-chart { padding-inline:0; } }
   </style>
+  <style id="admin-building-brand">
+    :root{--canvas:#f5f4ee;--paper:#fffefa;--line:#e7e2d6;--ink:#263b34;--text-muted:#718078;--brand:#315f50;--brand-dark:#24483d;--brand-hover:#254d41;--brand-soft:#edf4ef;--gold:#a77d45;--gold-soft:#f7f0e4;--sidebar-bg:#24483d;--sidebar-border:#315f50}
+    body,.shell{background:#f5f4ee!important;color:#34483f!important}
+    .sidebar{background:linear-gradient(160deg,#315f50 0%,#24483d 58%,#1d3a32 100%)!important;border-left:1px solid #477663!important;box-shadow:4px 0 24px rgba(36,72,61,.12)!important}
+    .brand-logo{display:flex!important;align-items:center!important;gap:12px!important}
+    .brand-mark{width:54px!important;height:54px!important;flex:0 0 54px!important;filter:drop-shadow(0 5px 10px rgba(9,35,28,.22))}
+    .brand-type strong{color:#fff!important}.brand-type small{color:#d1dfd7!important}
+    .nav button.active{background:linear-gradient(100deg,#477663,#315f50)!important;border-color:rgba(242,219,171,.28)!important;box-shadow:inset -3px 0 #d8bb83,0 5px 14px rgba(9,35,28,.16)!important}
+    .nav button.active .nav-glyph{border-color:rgba(216,187,131,.42)!important;background:rgba(216,187,131,.15)!important;color:#f2dbab!important}
+    .hero-banner{background:radial-gradient(ellipse at 8% 5%,rgba(216,187,131,.25),transparent 46%),linear-gradient(112deg,#24483d,#315f50 66%,#477663)!important;border-color:rgba(255,255,255,.18)!important;box-shadow:0 14px 32px rgba(36,72,61,.16)!important}
+    .hero-eyebrow,.section-kicker{color:#b18b54!important}.hero-copy h2,.hero-copy h2 strong{color:#fff!important}.hero-copy p{color:#e1ebe4!important}
+    .button.primary{background:linear-gradient(135deg,#3d725e,#315f50)!important;border-color:#315f50!important;box-shadow:0 5px 12px rgba(49,95,80,.18)!important}.button.primary:hover{background:#24483d!important}
+    .panel,.metric{border-color:#e7e2d6!important;box-shadow:0 4px 14px rgba(45,62,51,.045)!important}.panel-head{border-bottom-color:#eee9df!important}
+    .input:focus{border-color:#477663!important;box-shadow:0 0 0 3px rgba(49,95,80,.13)!important}
+    th{background:#f3f2eb!important;color:#58685f!important}tbody tr:hover{background:#f8f7f2!important}
+    .gate{background:radial-gradient(ellipse at top,#fffefa 0%,#f5f4ee 70%)!important}.gate-card{border-color:#e7e2d6!important;box-shadow:0 18px 48px rgba(45,62,51,.12)!important}
+    @media(max-width:760px){.brand-mark{width:42px!important;height:42px!important;flex-basis:42px!important}}
+  </style>
 </head>
 <body>
   <div class="shell min-h-screen bg-stone-50">
     <aside class="sidebar shadow-xl">
-      <div class="brand"><div class="brand-logo"><svg class="brand-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="cBgGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#060D1E"/>
-      <stop offset="50%" stop-color="#0F172A"/>
-      <stop offset="100%" stop-color="#1E3A8A"/>
-    </linearGradient>
-    <linearGradient id="cGoldGrad" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#FFFBEB"/>
-      <stop offset="25%" stop-color="#FCD34D"/>
-      <stop offset="65%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#B45309"/>
-    </linearGradient>
-    <linearGradient id="cGlassGrad" x1="20" y1="12" x2="44" y2="52" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#1E40AF" stop-opacity="0.4"/>
-    </linearGradient>
-    <filter id="cSoftGlow" x="-25%" y="-25%" width="150%" height="150%">
-      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#F59E0B" flood-opacity="0.5"/>
-    </filter>
-  </defs>
-  <rect width="64" height="64" rx="17" fill="url(#cBgGrad)"/>
-  <rect x="1" y="1" width="62" height="62" rx="16" stroke="rgba(255,255,255,0.14)" stroke-width="1.2"/>
-  <path d="M38 7L48 18V55H36V11L38 7Z" fill="url(#cGlassGrad)" stroke="#38BDF8" stroke-width="1.2" stroke-linejoin="round"/>
-  <path d="M26 7L16 18V55H28V11L26 7Z" fill="url(#cGlassGrad)" stroke="#38BDF8" stroke-width="1.2" stroke-linejoin="round"/>
-  <path d="M22 23L32 14L42 23V48L32 55L22 48V23Z" fill="#0B1329" stroke="url(#cGoldGrad)" stroke-width="1.8" stroke-linejoin="round" filter="url(#cSoftGlow)"/>
-  <line x1="25" y1="28" x2="39" y2="28" stroke="#FCD34D" stroke-width="1" stroke-dasharray="2 1.5"/>
-  <line x1="25" y1="35" x2="39" y2="35" stroke="#FCD34D" stroke-width="1" stroke-dasharray="2 1.5"/>
-  <line x1="25" y1="42" x2="39" y2="42" stroke="#FCD34D" stroke-width="1" stroke-dasharray="2 1.5"/>
-  <text x="32" y="37.5" text-anchor="middle" font-family="'Cairo','Tajawal',sans-serif" font-size="11" font-weight="900" fill="url(#cGoldGrad)" letter-spacing="0.5" filter="url(#cSoftGlow)">الهدى</text>
-  <polygon points="32,3 34,8 39,9 35,12 36,17 32,14 28,17 29,12 25,9 30,8" fill="url(#cGoldGrad)" filter="url(#cSoftGlow)"/>
-  <rect x="13" y="55" width="38" height="3" rx="1.5" fill="url(#cGoldGrad)"/>
+      <div class="brand"><div class="brand-logo"><svg class="brand-mark" viewBox="0 0 64 64" role="img" aria-label="برج الهدى السكني" xmlns="http://www.w3.org/2000/svg">
+  <defs><linearGradient id="towerBg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#477663"/><stop offset="1" stop-color="#24483d"/></linearGradient><linearGradient id="towerGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f2dbab"/><stop offset="1" stop-color="#b98b4d"/></linearGradient></defs>
+  <rect width="64" height="64" rx="18" fill="url(#towerBg)"/>
+  <rect x="1" y="1" width="62" height="62" rx="17" stroke="#ffffff" stroke-opacity=".18"/>
+  <path d="M20 54V16l12-8 12 8v38H20Z" fill="#f8f6ef" stroke="url(#towerGold)" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M16 17h32M24 22h5v5h-5zm11 0h5v5h-5zM24 32h5v5h-5zm11 0h5v5h-5zM24 42h5v5h-5zm11 0h5v5h-5z" fill="#477663"/>
+  <path d="M29 54V49a3 3 0 0 1 6 0v5" fill="#24483d" stroke="#b98b4d" stroke-width="1.5"/>
+  <path d="M13 56h38" stroke="url(#towerGold)" stroke-width="3" stroke-linecap="round"/>
 </svg><span class="brand-type"><strong>منظومة الهدى</strong><small>الإدارة المالية السحابية</small></span></div></div>
       <div class="nav-caption">القائمة الرئيسية</div>
       <nav class="nav" aria-label="التنقل الرئيسي">
