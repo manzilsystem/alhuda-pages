@@ -3338,6 +3338,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
             if ($('newAdminPin').value !== $('confirmAdminPin').value) throw new Error('تأكيد الرمز الجديد غير مطابق.');
             const changed = await server('changeAdminPin', pin, $('newAdminPin').value, state.sessionToken);
             if (!changed || !changed.ok) throw new Error(changed && changed.error || 'تعذر تغيير الرمز.');
+            try { if ($('rememberGithubToken').checked) await rememberGitHubToken(githubToken, $('newAdminPin').value); else forgetRememberedGitHubToken(); } catch (rememberError) {}
             await server('logoutAdminSession', state.sessionToken);
             clearStoredAdminSession();
             state.sessionToken = '';
