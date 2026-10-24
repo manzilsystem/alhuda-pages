@@ -205,13 +205,13 @@
           <button class="dialog-close" id="unitDialogClose" type="button" aria-label="إغلاق">×</button>
           <span class="dialog-kicker">بوابة الملاك</span>
           <h3 id="unitDialogTitle">بوابة الشقة</h3>
-          <p>هذه البطاقة تعرض رقم الوحدة فقط. إصدار رمز شخصي أو إرسال رمز عبر WhatsApp أو عرض حسابات الملاك غير متاح من GitHub Pages وحده.</p>
-          <p class="dialog-note">لم يتم إنشاء رمز دخول أو حفظ بيانات لهذه الشقة.</p>
-          <button class="button button-primary" id="unitDialogDone" type="button">فهمت</button>
+          <p>لطلب رمز فتح الشقة، أرسل طلبًا للمدير من رقم واتساب المسجل لديه. سيتحقق المدير يدويًا من رقم المُرسل قبل إرسال الرمز.</p>
+          <p class="dialog-note">هذا يفتح واتساب العادي برسالة جاهزة؛ لن تُرسل الرسالة إلا بعد مراجعتها والضغط على إرسال. لا تكتب بيانات مالية أو شخصية في الطلب.</p>
+          <div class="hero-links dialog-actions"><a class="button button-primary" id="unitWhatsAppRequest" href="https://wa.me/?text=" target="_blank" rel="noopener">طلب الرمز عبر واتساب</a><button class="button button-secondary" id="unitDialogDone" type="button">إغلاق</button></div>
         </dialog>
         <aside class="privacy-note" id="privacy">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.7 8 7 10 4.3-2 7-5.5 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6m-3-3v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <div><strong>خصوصيتكم مهمة</strong><p>هذه الصفحة تعرض أرقام الشقق والأدوار فقط. لا تنشر أرصدة الوحدات أو بيانات السكان أو أرقام الهواتف في الموقع العام. تسجيل الدخول الآمن وإرسال الرموز يحتاجان خادمًا وخدمة رسائل خارج GitHub.</p></div>
+          <div><strong>خصوصيتكم مهمة</strong><p>هذه الصفحة تعرض أرقام الشقق والأدوار فقط. لا تنشر أرصدة الوحدات أو بيانات السكان أو أرقام الهواتف في الموقع العام. طلب الرمز يتم يدويًا عبر واتساب؛ يطابق المدير رقم المُرسل مع سجل الوحدة ثم يرد عليه.</p></div>
         </aside>
       </div>
     </section>
@@ -221,6 +221,7 @@
     const unitGrid = document.getElementById('unitGrid');
     const unitDialog = document.getElementById('unitDialog');
     const unitDialogTitle = document.getElementById('unitDialogTitle');
+    const unitWhatsAppRequest = document.getElementById('unitWhatsAppRequest');
     for (let floor = 1; floor <= 11; floor += 1) {
       for (let position = 1; position <= 2; position += 1) {
         const unitNumber = String((floor - 1) * 2 + position).padStart(2, '0');
@@ -231,6 +232,8 @@
         card.innerHTML = `<span class="unit-card-top"><span class="unit-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="unit-arrow" aria-hidden="true">↗</span></span><span class="unit-label">الشقة</span><strong class="unit-number">${unitNumber}</strong><span class="unit-floor">الدور ${floor.toLocaleString('ar-EG')}</span>`;
         card.addEventListener('click', () => {
           unitDialogTitle.textContent = `بوابة الشقة ${unitNumber}`;
+          const request = `السلام عليكم، أطلب رمز الوصول للشقة رقم ${unitNumber}. برجاء مطابقة رقم واتساب المُرسل مع الرقم المسجل للوحدة قبل إرسال الرمز.`;
+          unitWhatsAppRequest.href = `https://wa.me/?text=${encodeURIComponent(request)}`;
           if (typeof unitDialog.showModal === 'function') unitDialog.showModal();
           else unitDialog.setAttribute('open', '');
         });
