@@ -233,7 +233,7 @@
         card.addEventListener('click', () => {
           unitDialogTitle.textContent = `بوابة الشقة ${unitNumber}`;
           const request = `السلام عليكم، أطلب رمز الوصول للشقة رقم ${unitNumber}. برجاء مطابقة رقم واتساب المُرسل مع الرقم المسجل للوحدة قبل إرسال الرمز.`;
-          unitWhatsAppRequest.href = `https://wa.me/?text=${encodeURIComponent(request)}`;
+          unitWhatsAppRequest.href = `https://wa.me/201027767039?text=${encodeURIComponent(request)}`;
           if (typeof unitDialog.showModal === 'function') unitDialog.showModal();
           else unitDialog.setAttribute('open', '');
         });
