@@ -3136,7 +3136,10 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
             syncText('حُفظ التعديل المشفّر في GitHub');
             notify(ownerPortalError ? `حُفظ ${label} في الخزانة. تعذر تحديث بوابة الملاك: ${ownerPortalError}` : `حُفظ ${label} مشفّرًا في GitHub.`, ownerPortalError ? 'error' : 'success');
             const priorApartment = (previous.apartments || []).find((item) => String(item.number) === String(apartmentForSave.number));
-            if (!ownerPortalError && apartmentForSave.ownerAccessCode && String(apartmentForSave.ownerAccessCode) !== String(priorApartment && priorApartment.ownerAccessCode || '')) {
+            const currentRecipient = apartmentForSave.role === 'مستأجر' ? apartmentForSave.tenantPhone : apartmentForSave.ownerPhone;
+            const previousRecipient = priorApartment && priorApartment.role === 'مستأجر' ? priorApartment.tenantPhone : priorApartment && priorApartment.ownerPhone;
+            const accessDetailsChanged = String(apartmentForSave.ownerAccessCode || '') !== String(priorApartment && priorApartment.ownerAccessCode || '') || String(currentRecipient || '') !== String(previousRecipient || '');
+            if (!ownerPortalError && apartmentForSave.ownerAccessCode && accessDetailsChanged) {
               try { await sendOwnerCodeWithUltraMsg(apartmentForSave); notify('تم إرسال كود الشقة تلقائيًا إلى رقم واتساب المسجل.', 'success'); }
               catch (sendError) { notify('حُفظ كود الشقة، لكن تعذر إرساله عبر UltraMsg: ' + (sendError.message || 'تحقق من إعدادات الخدمة ورقم الهاتف.'), 'error'); }
             }
