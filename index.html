@@ -228,6 +228,8 @@
             <div class="owner-unit-facts" id="ownerUnitFacts"></div>
             <div class="owner-section-head"><div><span class="dialog-kicker">كشف الشقة</span><h4>الاشتراكات والإيصالات</h4></div></div>
             <div class="owner-table-wrap"><table><thead><tr><th>التاريخ</th><th>الفترة</th><th>المبلغ</th><th>الإيصال</th></tr></thead><tbody id="ownerPaymentRows"></tbody></table></div>
+            <div class="owner-section-head"><div><span class="dialog-kicker">مصروفات الشقة</span><h4>المصروفات المسجلة عليها</h4></div></div>
+            <div class="owner-table-wrap"><table><thead><tr><th>التاريخ</th><th>البيان</th><th>الخزنة</th><th>المبلغ</th></tr></thead><tbody id="ownerExpenseRows"></tbody></table></div>
             <div class="owner-section-head"><div><span class="dialog-kicker">التقرير العام</span><h4>حركة خزائن البرج</h4></div></div>
             <p class="owner-report-period">إجمالي الحركات المسجلة حتى آخر تحديث، بالجنيه المصري.</p>
             <div class="owner-totals" id="ownerBuildingTotals"></div>
@@ -267,6 +269,9 @@
       const payments = document.getElementById('ownerPaymentRows'); payments.replaceChildren();
       (payload.receipts || []).slice(0, 30).forEach((item) => { const row = document.createElement('tr'); safeCell(row, formatOwnerDate(item.date)); safeCell(row, item.coverStart ? item.coverStart + (item.coverEnd && item.coverEnd !== item.coverStart ? ' — ' + item.coverEnd : '') : '—'); safeCell(row, formatOwnerMoney(item.amount)); safeCell(row, item.receiptNo || '—'); payments.append(row); });
       if (!payments.children.length) { const row = document.createElement('tr'); const cell = safeCell(row, 'لا توجد إيصالات مسجلة حتى الآن'); cell.colSpan = 4; cell.className = 'owner-empty'; payments.append(row); }
+      const expenses = document.getElementById('ownerExpenseRows'); expenses.replaceChildren();
+      (payload.apartmentExpenses || []).slice(0, 30).forEach((item) => { const row = document.createElement('tr'); safeCell(row, formatOwnerDate(item.date)); safeCell(row, item.description || 'مصروف شقة'); safeCell(row, item.fundType || 'خزنة الصيانة والخدمات'); safeCell(row, formatOwnerMoney(item.amount)); expenses.append(row); });
+      if (!expenses.children.length) { const row = document.createElement('tr'); const cell = safeCell(row, 'لا توجد مصروفات مسجلة على الشقة'); cell.colSpan = 4; cell.className = 'owner-empty'; expenses.append(row); }
       const building = payload.building || {}; const totals = building.totals || {};
       const totalCards = document.getElementById('ownerBuildingTotals'); totalCards.replaceChildren();
       [['إجمالي الوارد', totals.inflows], ['إجمالي المنصرف', totals.outflows], ['الرصيد الافتتاحي', totals.openingCash], ['الرصيد الحالي', totals.closingCash]].forEach(([label, value]) => { const card = document.createElement('div'); card.className = 'owner-total'; const name = document.createElement('span'); name.textContent = label; const amount = document.createElement('strong'); amount.textContent = formatOwnerMoney(value); card.append(name, amount); totalCards.append(card); });
