@@ -70,6 +70,26 @@
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 21px; }
     .section-head h2 { margin: 0; font-size: 23px; letter-spacing: -.4px; }
     .section-head p { max-width: 470px; margin: 0; color: var(--muted); font-size: 12px; }
+    .unit-count { padding: 6px 11px; border: 1px solid #ded8c9; border-radius: 999px; background: #f2eee3; color: #786644; font-size: 11px; font-weight: 750; white-space: nowrap; }
+    .unit-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; }
+    .unit-card { min-height: 154px; display: flex; flex-direction: column; align-items: flex-start; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); text-align: right; box-shadow: 0 5px 17px rgb(41 59 49 / 4%); transition: transform .18s, border-color .18s, box-shadow .18s, background .18s; }
+    .unit-card:hover, .unit-card:focus-visible { transform: translateY(-3px); border-color: #9eb8a4; background: #fff; box-shadow: 0 13px 25px rgb(41 59 49 / 10%); outline: none; }
+    .unit-card-top { width: 100%; display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .unit-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--green-pale); color: var(--green); }
+    .unit-arrow { color: #9aa69c; font-size: 16px; }
+    .unit-label { color: var(--muted); font-size: 10px; }
+    .unit-number { margin-top: -4px; color: var(--green-deep); font-size: 27px; font-variant-numeric: tabular-nums; line-height: 1.25; }
+    .unit-floor { margin-top: 5px; padding: 2px 8px; border-radius: 999px; background: #f5f2e9; color: #796c55; font-size: 10px; }
+    .unit-dialog { position: fixed; width: min(430px, calc(100% - 32px)); max-width: none; max-height: calc(100% - 32px); margin: auto; padding: 27px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--ink); box-shadow: 0 25px 70px rgb(22 44 34 / 22%); }
+    .unit-dialog::backdrop { background: rgb(28 43 36 / 52%); backdrop-filter: blur(3px); }
+    .unit-dialog[open] { animation: dialog-enter .18s ease-out; }
+    @keyframes dialog-enter { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+    .dialog-close { position: absolute; top: 12px; left: 13px; width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 10px; background: white; color: var(--muted); font-size: 22px; line-height: 1; }
+    .dialog-kicker { display: block; margin-bottom: 5px; color: var(--gold); font-size: 11px; font-weight: 800; }
+    .unit-dialog h3 { margin-bottom: 9px; font-size: 21px; }
+    .unit-dialog p { margin-bottom: 11px; color: var(--ink-soft); font-size: 13px; }
+    .unit-dialog .dialog-note { padding: 9px 11px; border-radius: 10px; background: var(--green-pale); color: var(--green-deep); font-size: 11px; }
+    .unit-dialog .button { width: 100%; margin-top: 4px; }
     .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     .feature-card { min-height: 196px; padding: 22px 21px 18px; border: 1px solid var(--line); border-radius: 17px; background: var(--surface); box-shadow: 0 7px 24px rgb(41 59 49 / 4%); transition: transform .2s, box-shadow .2s, border-color .2s; }
     .feature-card:hover { transform: translateY(-3px); border-color: #d4ddcf; box-shadow: 0 14px 30px rgb(41 59 49 / 8%); }
@@ -110,6 +130,12 @@
       .section { padding: 30px 0 45px; }
       .section-head { display: block; }
       .section-head h2 { margin-bottom: 5px; font-size: 20px; }
+      .section-head .unit-count { display: inline-flex; margin-top: 11px; }
+      .unit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .unit-card { min-height: 140px; padding: 13px; border-radius: 14px; }
+      .unit-card-top { margin-bottom: 9px; }
+      .unit-number { font-size: 24px; }
+      .unit-dialog { padding: 24px 20px 20px; }
       .feature-grid { grid-template-columns: 1fr; gap: 10px; }
       .feature-card { min-height: 0; display: grid; grid-template-columns: 43px 1fr; column-gap: 13px; padding: 16px; }
       .feature-icon { grid-row: span 3; margin: 0; }
@@ -135,9 +161,9 @@
         <span class="brand-copy"><strong>منظومة الهدى</strong><span>بوابة الملاك</span></span>
       </a>
       <nav class="header-nav" aria-label="التنقل">
-        <a href="#services">خدمات البوابة</a>
+        <a href="#units">الشقق</a>
         <a href="#privacy">الخصوصية</a>
-        <a class="nav-pill" href="#services">استكشف المحتوى العام <span aria-hidden="true">←</span></a>
+        <a class="nav-pill" href="#units">عرض الشقق الـ٢٢ <span aria-hidden="true">←</span></a>
       </nav>
     </div>
   </header>
@@ -147,12 +173,12 @@
         <div class="hero-copy">
           <span class="eyebrow">المساحة الرسمية لملاك العقار</span>
           <h1>أهلًا بكم في<br><span>بوابة ملاك الهدى</span></h1>
-          <p>وجهة مرتبة للمعلومات والإعلانات العامة الخاصة بالعقار، بتجربة بسيطة وواضحة على الهاتف والكمبيوتر.</p>
+          <p>اختر رقم الشقة من البطاقات أدناه. تظهر أرقام الوحدات والأدوار فقط، من دون أسماء أو بيانات شخصية.</p>
           <div class="hero-links">
-            <a class="button button-primary" href="#services">تعرّف على خدمات البوابة <span aria-hidden="true">←</span></a>
+            <a class="button button-primary" href="#units">عرض بطاقات الشقق <span aria-hidden="true">←</span></a>
             <a class="button button-secondary" href="#privacy">عن الخصوصية</a>
           </div>
-          <div class="hero-note"><span class="status-dot" aria-hidden="true"></span>الموقع متاح للمعلومات العامة</div>
+          <div class="hero-note"><span class="status-dot" aria-hidden="true"></span>٢٢ شقة · ١١ دورًا · شقتان في كل دور</div>
         </div>
         <div class="architecture" aria-hidden="true">
           <div class="architecture-frame">
@@ -167,42 +193,58 @@
               <path d="M76 287h208" stroke="#d8bb83" stroke-width="3" stroke-linecap="round"/>
             </svg>
           </div>
-          <div class="arch-caption"><span class="caption-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>مجتمع الهدى</strong><small>معلومات عامة في مكان واحد</small></span></div>
+          <div class="arch-caption"><span class="caption-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>برج الهدى</strong><small>٢٢ وحدة سكنية على ١١ دورًا</small></span></div>
         </div>
       </div>
     </section>
-    <section class="section" id="services">
+    <section class="section" id="units">
       <div class="wrap">
-        <div class="section-head"><h2>ماذا ستجد في البوابة؟</h2><p>محتوى مشترك للعقار، يُنشر هنا عند توفره من الإدارة.</p></div>
-        <div class="feature-grid">
-          <article class="feature-card" id="announcements">
-            <span class="feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 10v4h3l8 4V6l-8 4H5ZM8 14l1.4 5h3L11 15.5M19 9l2-2M19 15l2 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <h3>إعلانات العقار</h3>
-            <p>مساحة للإشعارات العامة وأخبار الخدمات المشتركة.</p>
-            <a class="feature-link" href="#privacy">معلومات عن المحتوى <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m0 0 6 6m-6-6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          </article>
-          <article class="feature-card" id="meetings">
-            <span class="feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="6" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M8 4v4m8-4v4M4 10h16m-11 4h2m3 0h2m-7 3h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
-            <h3>المواعيد والاجتماعات</h3>
-            <p>مكان للمواعيد أو الاجتماعات التي تخص مجتمع الملاك.</p>
-            <a class="feature-link" href="#privacy">معلومات عن المحتوى <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m0 0 6 6m-6-6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          </article>
-          <article class="feature-card" id="documents">
-            <span class="feature-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 3h7l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 3v6h5M9 14h6m-6 3h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
-            <h3>مستندات عامة</h3>
-            <p>مكان للملفات الإرشادية والمستندات المشتركة غير الشخصية.</p>
-            <a class="feature-link" href="#privacy">معلومات عن المحتوى <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m0 0 6 6m-6-6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          </article>
-        </div>
-        <div class="public-empty"><span class="empty-line" aria-hidden="true"></span><strong>لا توجد إعلانات عامة منشورة حتى الآن</strong><span>ستظهر التحديثات المشتركة هنا عند نشرها.</span></div>
+        <div class="section-head"><div><h2>شقق البرج</h2><p>اختر بطاقة لمعرفة ما يمكن عرضه حاليًا عبر البوابة العامة.</p></div><span class="unit-count">٢٢ شقة</span></div>
+        <div class="unit-grid" id="unitGrid" aria-label="بطاقات الشقق"></div>
+        <dialog class="unit-dialog" id="unitDialog" aria-labelledby="unitDialogTitle">
+          <button class="dialog-close" id="unitDialogClose" type="button" aria-label="إغلاق">×</button>
+          <span class="dialog-kicker">بوابة الملاك</span>
+          <h3 id="unitDialogTitle">بوابة الشقة</h3>
+          <p>هذه البطاقة تعرض رقم الوحدة فقط. إصدار رمز شخصي أو إرسال رمز عبر WhatsApp أو عرض حسابات الملاك غير متاح من GitHub Pages وحده.</p>
+          <p class="dialog-note">لم يتم إنشاء رمز دخول أو حفظ بيانات لهذه الشقة.</p>
+          <button class="button button-primary" id="unitDialogDone" type="button">فهمت</button>
+        </dialog>
         <aside class="privacy-note" id="privacy">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.7 8 7 10 4.3-2 7-5.5 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6m-3-3v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <div><strong>خصوصيتكم مهمة</strong><p>هذه الصفحة تعرض محتوى عامًا فقط. لا تعرض أرصدة الوحدات أو بيانات السكان أو أي سجلات شخصية؛ فالموقع الثابت لا يوفّر تسجيل دخول آمنًا لكل مالك.</p></div>
+          <div><strong>خصوصيتكم مهمة</strong><p>هذه الصفحة تعرض أرقام الشقق والأدوار فقط. لا تنشر أرصدة الوحدات أو بيانات السكان أو أرقام الهواتف في الموقع العام. تسجيل الدخول الآمن وإرسال الرموز يحتاجان خادمًا وخدمة رسائل خارج GitHub.</p></div>
         </aside>
       </div>
     </section>
   </main>
   <footer class="site-footer"><div class="wrap footer-row"><span class="footer-brand">منظومة الهدى · بوابة الملاك</span><span>معلومات عامة لمجتمع الملاك</span></div></footer>
+  <script>
+    const unitGrid = document.getElementById('unitGrid');
+    const unitDialog = document.getElementById('unitDialog');
+    const unitDialogTitle = document.getElementById('unitDialogTitle');
+    for (let floor = 1; floor <= 11; floor += 1) {
+      for (let position = 1; position <= 2; position += 1) {
+        const unitNumber = String((floor - 1) * 2 + position).padStart(2, '0');
+        const card = document.createElement('button');
+        card.className = 'unit-card';
+        card.type = 'button';
+        card.setAttribute('aria-label', `شقة ${unitNumber}، الدور ${floor.toLocaleString('ar-EG')}`);
+        card.innerHTML = `<span class="unit-card-top"><span class="unit-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="unit-arrow" aria-hidden="true">↗</span></span><span class="unit-label">الشقة</span><strong class="unit-number">${unitNumber}</strong><span class="unit-floor">الدور ${floor.toLocaleString('ar-EG')}</span>`;
+        card.addEventListener('click', () => {
+          unitDialogTitle.textContent = `بوابة الشقة ${unitNumber}`;
+          if (typeof unitDialog.showModal === 'function') unitDialog.showModal();
+          else unitDialog.setAttribute('open', '');
+        });
+        unitGrid.append(card);
+      }
+    }
+    function closeUnitDialog() {
+      if (typeof unitDialog.close === 'function') unitDialog.close();
+      else unitDialog.removeAttribute('open');
+    }
+    document.getElementById('unitDialogClose').addEventListener('click', closeUnitDialog);
+    document.getElementById('unitDialogDone').addEventListener('click', closeUnitDialog);
+    unitDialog.addEventListener('click', (event) => { if (event.target === unitDialog) closeUnitDialog(); });
+  </script>
 </body>
 </html>
 
