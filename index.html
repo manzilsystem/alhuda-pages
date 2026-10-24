@@ -1979,6 +1979,15 @@
       const monthKey = (date) => String(date || '').slice(0, 7);
       const thisMonth = () => monthKey(today());
       const monthLabel = (value) => { if (!/^\d{4}-\d{2}$/.test(String(value || ''))) return '—'; const [year, month] = value.split('-').map(Number); return new Intl.DateTimeFormat('ar-EG', { month: 'long', year: 'numeric', timeZone: 'Africa/Cairo' }).format(new Date(year, month - 1, 1)); };
+      function formatDocumentDate(value) {
+        const text = String(value || '').trim();
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+        if (!match) return text || '—';
+        const [, year, month, day] = match.map(Number);
+        const date = new Date(Date.UTC(year, month - 1, day, 12));
+        if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return text;
+        return new Intl.DateTimeFormat('ar-EG', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Africa/Cairo' }).format(date);
+      }
       const currencyFormatter = new Intl.NumberFormat('ar-EG', { style: 'currency', currency: 'EGP', minimumFractionDigits: 0, maximumFractionDigits: 2 });
       const money = (value) => currencyFormatter.format(Number(value) || 0);
       const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
