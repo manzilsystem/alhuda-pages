@@ -2374,7 +2374,7 @@
       function renderSettingsPage() {
         if (!state.data) return;
         if ($('setBuildingName')) $('setBuildingName').value = state.data.buildingName || 'برج الهدى السكني';
-        if (if (if ($('setOpeningOperating')) $('setOpeningOperating').value = Number(state.data.openingBalance) || 0;
+        if ($('setOpeningOperating')) $('setOpeningOperating').value = Number(state.data.openingBalance) || 0;
         if ($('setOpeningFund')) $('setOpeningFund').value = Number(state.data.openingFundBalance) || 0;
         if ($('setOpeningEmergency')) $('setOpeningEmergency').value = Number(state.data.openingEmergencyFundBalance) || 0;
 
