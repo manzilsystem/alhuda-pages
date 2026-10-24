@@ -1,0 +1,28 @@
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binaries
+*.test
+*.out
+
+# Output of the go build
+/bin/
+
+# Vendor directory
+/vendor/
+
+# IDE/editor files
+*.idea/
+*.vscode/
+*.swp
+
+# Application secrets and local build output
+.env
+.env.*
+!.env.example
+/target/
+/dist/
+
