@@ -2218,6 +2218,25 @@
         vaultRecord = record;
         return record;
       }
+      async function writePublicDirectory(data) {
+        const url = `https://api.github.com/repos/${encodeURIComponent(githubOwner)}/alhuda-pages/contents/public-directory.json`;
+        let sha = null;
+        const current = await fetch(`${url}?ref=main`, { headers: githubHeaders(), cache: 'no-store' });
+        if (current.ok) sha = (await current.json()).sha;
+        else if (current.status !== 404) throw await githubError(current);
+        const units = (data.apartments || []).map((apartment) => ({
+          number: String(apartment.number).padStart(2, '0'),
+          floor: Number(apartment.floor) || Math.ceil(Number(apartment.number) / 2),
+          ownerName: String(apartment.ownerName || ''),
+          tenantName: apartment.role === 'مستأجر' ? String(apartment.tenantName || '') : '',
+          role: String(apartment.role || 'مالك غير مقيم'),
+          active: apartment.active !== false
+        }));
+        const body = { message: 'تحديث أسماء دليل شقق برج الهدى', content: bytesToBase64(new TextEncoder().encode(JSON.stringify({ updatedAt: new Date().toISOString(), units }))), branch: 'main' };
+        if (sha) body.sha = sha;
+        const response = await fetch(url, { method: 'PUT', headers: githubHeaders(), body: JSON.stringify(body), cache: 'no-store' });
+        if (!response.ok) throw await githubError(response);
+      }
       const bytesToBase64 = (bytes) => { const view = new Uint8Array(bytes); let binary = ''; for (let i = 0; i < view.length; i += 0x8000) binary += String.fromCharCode(...view.subarray(i, i + 0x8000)); return btoa(binary); };
       const base64ToBytes = (text) => Uint8Array.from(atob(text), (char) => char.charCodeAt(0));
       async function deriveVaultKey(passphrase, salt) {
@@ -2277,7 +2296,8 @@
             if (Number(record.revision) !== Number(args[2])) throw new Error('تغيرت نسخة الخزانة على GitHub. سجّل الخروج ثم الدخول مجددًا لتحميل أحدث نسخة قبل الحفظ.');
             const saved = await encryptVault(args[0], vaultKey, record.revision + 1, record.salt);
             await writeVault(saved);
-            return { ok: true, data: args[0], revision: saved.revision };
+            let publicDirectoryError = ''; try { await writePublicDirectory(args[0]); } catch (error) { publicDirectoryError = error.message || 'تعذر تحديث أسماء البطاقات العامة.'; }
+            return { ok: true, data: args[0], revision: saved.revision, publicDirectoryError };
           }
           case 'saveApartmentCloud': {
             if (!vaultKey) throw new Error('انتهت الجلسة؛ سجّل الدخول مجددًا.');
@@ -2289,7 +2309,8 @@
             data.apartments[index] = args[0];
             const saved = await encryptVault(data, vaultKey, record.revision + 1, record.salt);
             await writeVault(saved);
-            return { ok: true, apartment: data.apartments[index], revision: saved.revision };
+            let publicDirectoryError = ''; try { await writePublicDirectory(data); } catch (error) { publicDirectoryError = error.message || 'تعذر تحديث أسماء البطاقات العامة.'; }
+            return { ok: true, apartment: data.apartments[index], revision: saved.revision, publicDirectoryError };
           }
           case 'getOverdueApartments': {
             if (!state.data) throw new Error('سجّل دخول المدير أولًا.');
@@ -3070,7 +3091,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
           const result = apartmentForSave
             ? await server('saveApartmentCloud', apartmentForSave, state.sessionToken, state.revision)
             : await server('saveAllDataCloud', candidate, state.sessionToken, state.revision);
-          if (!result || !result.ok) throw new Error(result && result.error || 'رفض GitHub حفظ التعديل.');
+          if (!result || !result.ok) throw new Error(result && result.error || 'رفض GitHub حفظ التعديل.'); if (result.publicDirectoryError) notify('حُفظت بيانات الإدارة، لكن لم تتحدث أسماء البطاقات. يلزم رمز GitHub بصلاحية Contents: Read and write على alhuda-pages.', 'error');
           if (apartmentForSave) {
             if (!result.apartment) throw new Error('تم الحفظ لكن لم تصل بيانات الشقة للتحقق من العرض.');
             Object.assign(apartmentForSave, result.apartment);
@@ -3248,6 +3269,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
           state.sessionToken = 'github-session';
           state.data = result.data;
           state.revision = result.revision;
+          try { await writePublicDirectory(state.data); } catch (publishError) { notify('تعذر نشر أسماء البطاقات. امنح الرمز صلاحية Contents: Read and write لمستودع alhuda-pages.', 'error'); }
           if (result.needsPinChange) {
             state.needsPinChange = true;
             $('newPinFields').hidden = false;
