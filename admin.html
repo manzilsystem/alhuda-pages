@@ -2004,7 +2004,7 @@
   <text x="32" y="37.5" text-anchor="middle" font-family="'Cairo','Tajawal',sans-serif" font-size="11" font-weight="900" fill="url(#cGoldGrad)" letter-spacing="0.5" filter="url(#cSoftGlow)">الهدى</text>
   <polygon points="32,3 34,8 39,9 35,12 36,17 32,14 28,17 29,12 25,9 30,8" fill="url(#cGoldGrad)" filter="url(#cSoftGlow)"/>
   <rect x="13" y="55" width="38" height="3" rx="1.5" fill="url(#cGoldGrad)"/>
-</svg><span><strong>منظومة الهدى</strong><small>الإدارة المالية والحسابات</small></span></div><p class="muted">هذه لوحة المدير؛ لا تتيح دخولًا ذاتيًا للملاك أو المستأجرين ولا ترسل رسائل أو رموز واتساب. تُحفظ بيانات الخزانة مشفّرة في مستودع خاص. أدخل رمز GitHub المحدود لهذه الخزانة وعبارة مرور قوية من 16 حرفًا أو أكثر. يبقى الرمز في ذاكرة الصفحة أثناء الجلسة فقط.</p><div class="form-grid"><div class="field"><label for="githubOwner">حساب GitHub</label><input class="input" id="githubOwner" value="manzilsystem" autocomplete="off" required></div><div class="field"><label for="githubRepo">مستودع البيانات الخاص</label><input class="input" id="githubRepo" value="alhuda-vault" autocomplete="off" required></div><div class="field wide"><label for="githubToken">رمز GitHub محدود لهذا المستودع</label><input class="input" id="githubToken" type="password" autocomplete="off" required></div></div><div class="field"><label for="adminPin">عبارة مرور تشفير الخزانة</label><input class="input" id="adminPin" type="password" minlength="16" autocomplete="off" required></div><div class="notice error" id="loginError" hidden></div><div class="field" id="newPinFields" hidden><label for="newAdminPin">عبارة مرور جديدة (16 حرفًا أو أكثر)</label><input class="input" id="newAdminPin" type="password" minlength="16" autocomplete="off"><label for="confirmAdminPin">تأكيد العبارة الجديدة</label><input class="input" id="confirmAdminPin" type="password" minlength="16" autocomplete="off"></div><div class="form-actions"><button class="button primary" id="loginSubmit" type="submit">اتصال وفتح الخزانة</button><button class="button" type="button" data-close>إلغاء</button></div></div></form></div>
+</svg><span><strong>منظومة الهدى</strong><small>الإدارة المالية والحسابات</small></span></div><p class="muted">هذه لوحة المدير؛ لا تتيح دخولًا ذاتيًا للملاك أو المستأجرين ولا ترسل رسائل أو رموز واتساب. تُحفظ بيانات الخزانة مشفّرة في مستودع خاص. أدخل رمز GitHub المحدود لهذه الخزانة وعبارة مرور قوية من 16 حرفًا أو أكثر. يبقى الرمز في ذاكرة الصفحة أثناء الجلسة فقط.</p><div class="form-grid"><div class="field"><label for="githubOwner">حساب GitHub</label><input class="input" id="githubOwner" value="manzilsystem" autocomplete="off" required></div><div class="field"><label for="githubRepo">مستودع البيانات الخاص</label><input class="input" id="githubRepo" value="alhuda-vault" autocomplete="off" required></div><div class="field wide"><label for="githubToken">رمز GitHub محدود لهذا المستودع</label><input class="input" id="githubToken" type="password" autocomplete="off" required></div></div><div class="field"><label for="adminPin">عبارة مرور تشفير الخزانة</label><input class="input" id="adminPin" type="password" minlength="16" autocomplete="off" required></div><div class="notice error" id="loginError" hidden></div><div class="field" id="newPinFields" hidden><label for="newAdminPin">عبارة مرور جديدة (16 حرفًا أو أكثر)</label><input class="input" id="newAdminPin" type="password" minlength="16" autocomplete="off"><label for="confirmAdminPin">تأكيد العبارة الجديدة</label><input class="input" id="confirmAdminPin" type="password" minlength="16" autocomplete="off"></div><div class="form-actions"><button class="button primary" id="loginSubmit" type="submit">اتصال وفتح الخزانة</button><button class="button" type="button" data-close>إلغاء</button><a class="button" href="./#units">العودة إلى بوابة الملاك</a></div></div></form></div>
 
   <div class="gate" id="cloudGate"><div class="gate-card"><h2>تعذر فتح التطبيق</h2><p id="gateMessage">اتصل بالإنترنت، ثم أدخل رمز GitHub المحدود لفتح الخزانة الخاصة.</p><div class="actions"><button class="button primary" id="retryLoad">إعادة المحاولة</button></div></div></div>
   <div id="busy" role="status" aria-busy="false"><div class="busy-card"><span class="busy-spinner" aria-hidden="true"></span><div class="busy-copy"><strong id="busyText">جارٍ تحميل البيانات…</strong><p id="busyElapsed" aria-live="off">بدأت العملية للتو.</p><p id="busyHint" aria-live="polite">يرجى الانتظار، ولا تضغط مرة أخرى.</p></div></div></div><div id="toast" role="status" aria-live="polite"></div>
@@ -3007,7 +3007,8 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
 
       function clearStoredAdminSession() { clearTimeout(adminSessionExpiryTimer); adminSessionExpiryTimer = 0; }
       function scheduleAdminSessionExpiry(expiresAt) { clearTimeout(adminSessionExpiryTimer); const remaining = Number(expiresAt) - Date.now(); if (remaining <= 0) { expireAdminSession(); return; } adminSessionExpiryTimer = setTimeout(expireAdminSession, remaining); }
-      function expireAdminSession() { clearStoredAdminSession(); state.sessionToken = ''; state.sessionExpiresAt = 0; state.admin = false; state.data = null; vaultKey = null; updateAdminUI(); server('logoutAdminSession').catch(() => {}); loadCloud(false).then(() => openLogin()); notify('انتهت الجلسة. أعد تسجيل الدخول لفتح الخزنة المشفّرة.'); }
+      function refreshAdminSessionExpiry() { if (!state.admin) return; if (Date.now() >= Number(state.sessionExpiresAt || 0)) { expireAdminSession(); return; } state.sessionExpiresAt = Date.now() + 10 * 60 * 1000; scheduleAdminSessionExpiry(state.sessionExpiresAt); }
+      function expireAdminSession() { clearStoredAdminSession(); state.sessionToken = ''; state.sessionExpiresAt = 0; state.admin = false; state.data = null; vaultKey = null; githubToken = ''; updateAdminUI(); server('logoutAdminSession').catch(() => {}); window.location.replace('./#units'); }
 
       function openOperation(kind) { if (!state.admin) { openLogin(); return; } $('operationForm').reset(); $('operationNotice').hidden = true; const isCollection = kind === 'collection'; const isTransfer = kind === 'transfer'; $('operationTitle').textContent = isCollection ? 'تسجيل تحصيل' : isTransfer ? 'تحويل بين الخزائن' : 'تسجيل مصاريف مدفوع'; $('collectionFields').hidden = !isCollection; $('expenseFields').hidden = isCollection || isTransfer; $('transferFields').hidden = !isTransfer; $('collectionDate').value = today(); $('expenseDate').value = today(); $('transferDate').value = today(); if (isCollection) { $('incomeType').value = 'subscription'; const payableApartments = activeApartments().filter((apt) => { const fee = apt.monthlyFee === null || apt.monthlyFee === undefined || apt.monthlyFee === '' ? Number(state.data.fee) || 0 : Number(apt.monthlyFee) || 0; return fee > 0; }); $('collectionApartment').innerHTML = payableApartments.length ? payableApartments.map((apt) => `<option value="${escapeHtml(apt.number)}">شقة ${escapeHtml(apt.number)} — ${escapeHtml(apt.resident)}</option>`).join('') : '<option value="">لا توجد وحدات غير معفاة</option>'; $('collectionApartment').disabled = !payableApartments.length; $('collectionStart').value = thisMonth(); $('collectionMonths').value = '1'; updateIncomeMode(); } $('operationDialog').classList.add('open'); }
       function updateIncomeMode() { const subscription = $('incomeType').value === 'subscription'; ['collectionApartmentField', 'collectionStartField', 'collectionMonthsField', 'collectionMethodField', 'collectionNotesField'].forEach((id) => { $(id).hidden = !subscription; }); ['fundIncomeFields', 'fundIncomePayerField', 'fundIncomeMethodField', 'fundIncomeReferenceField'].forEach((id) => { $(id).hidden = subscription; }); if (subscription) updateCollectionAmount(); else $('collectionAmount').value = ''; }
@@ -3263,7 +3264,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
           $('githubToken').value = '';
           $('adminPin').value = '';
           syncText('متصل بـGitHub · السجل مشفّر في المستودع الخاص');
-          notify(result.firstUse ? 'أنشئت الخزانة المشفّرة في مستودع GitHub الخاص. احتفظ بعبارة المرور؛ لا يمكن استعادتها بدونها.' : 'فُتحت الخزانة من GitHub. ستُقفل تلقائيًا بعد 10 دقائق.');
+          notify(result.firstUse ? 'أنشئت الخزانة المشفّرة في مستودع GitHub الخاص. احتفظ بعبارة المرور؛ لا يمكن استعادتها بدونها.' : 'فُتحت الخزانة. تنتهي الجلسة بعد 10 دقائق من عدم النشاط.');
         } catch (error) {
           githubToken = '';
           $('githubToken').value = '';
@@ -3274,24 +3275,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
         } finally { setBusy(false); }
       }
 
-      async function logout() {
-        const token = state.sessionToken;
-        clearStoredAdminSession();
-        state.sessionToken = '';
-        state.sessionExpiresAt = 0;
-        state.admin = false;
-        vaultKey = null;
-        
-        state.data = null;
-        updateAdminUI();
-        try { if (token) await server('logoutAdminSession', token); } catch (ignored) {}
-        await loadCloud(false);
-        openLogin();
-        notify('تم تسجيل الخروج.');
-      }
-
-
-      // ربط أحداث صفحة الإعدادات
+      async function logout() { const token = state.sessionToken; clearStoredAdminSession(); state.sessionToken = ''; state.sessionExpiresAt = 0; state.admin = false; vaultKey = null; githubToken = ''; state.data = null; updateAdminUI(); try { if (token) await server('logoutAdminSession', token); } catch (ignored) {} window.location.replace('./#units'); } // ربط أحداث صفحة الإعدادات
       document.addEventListener('DOMContentLoaded', () => {
         const changePinForm = $('changePinForm');
         if (changePinForm) {
@@ -3386,7 +3370,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
       document.querySelectorAll('[data-action]').forEach((button) => button.addEventListener('click', () => openOperation(button.dataset.action)));
       document.querySelectorAll('[data-close]').forEach((button) => button.addEventListener('click', () => closeDialog(button.closest('.overlay'))));
       document.querySelectorAll('.overlay').forEach((overlay) => overlay.addEventListener('click', (event) => { if (event.target === overlay) closeDialog(overlay); }));
-      $('adminButton').addEventListener('click', () => state.admin ? logout() : openLogin());
+      $('adminButton').addEventListener('click', () => state.admin ? logout() : openLogin()); ['pointerdown', 'keydown', 'input', 'touchstart'].forEach((eventName) => document.addEventListener(eventName, () => { if (state.admin) refreshAdminSessionExpiry(); }, { passive: true })); document.addEventListener('visibilitychange', () => { if (state.admin && document.visibilityState === 'visible' && Date.now() >= Number(state.sessionExpiresAt || 0)) expireAdminSession(); });
       $('operationForm').addEventListener('submit', saveOperation); $('apartmentForm').addEventListener('submit', saveApartment); $('loginForm').addEventListener('submit', login);
       $('collectionRows').addEventListener('click', (event) => {
         const voidBtn = event.target.closest('.void-receipt-btn');
