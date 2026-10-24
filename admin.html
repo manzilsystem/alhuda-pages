@@ -3,6 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style id="huda-admin-refinement">
+    /* تنسيق موحّد مع بوابة الملاك */
+    body, .shell { background: var(--canvas) !important; }
+    .sidebar { background: linear-gradient(180deg,#24483d,#1f4036) !important; border-left-color:#315f50 !important; box-shadow:3px 0 18px rgba(36,72,61,.11) !important; }
+    .brand { border-bottom-color:rgba(255,255,255,.12) !important; }
+    .nav button.active { background:#3d725f !important; border-color:#56836f !important; box-shadow:0 5px 14px rgba(9,35,28,.2) !important; }
+    .nav button:hover { background:rgba(255,255,255,.09) !important; }
+    .hero-banner { background:radial-gradient(ellipse at 8% 5%,rgba(185,157,103,.24),transparent 48%),linear-gradient(112deg,#24483d,#315f50 68%,#477663) !important; border-color:rgba(255,255,255,.17) !important; border-radius:20px !important; box-shadow:0 12px 28px rgba(36,72,61,.13) !important; }
+    .hero-eyebrow, .hero-principle strong { color:#e5ca91 !important; }
+    .hero-copy p { color:#e0ebe4 !important; }
+    .button.primary { background:linear-gradient(135deg,#3b725f,#315f50) !important; border-color:#315f50 !important; box-shadow:0 4px 10px rgba(49,95,80,.16) !important; }
+    .button.primary:hover { background:#254d41 !important; border-color:#254d41 !important; }
+    .panel, .metric { border-radius:16px !important; box-shadow:0 3px 12px rgba(45,62,51,.045) !important; }
+    .panel-head { border-bottom-color:#eee9df !important; }
+    .input:focus { border-color:var(--brand) !important; box-shadow:0 0 0 3px rgba(49,95,80,.13) !important; }
+    th { background:#f5f3ed !important; color:#58685f !important; }
+    tbody tr:hover { background:#f8f7f2 !important; }
+    .gate { background:radial-gradient(ellipse at top,#fffefa 0%,#f7f5ef 68%) !important; }
+    .gate-card { border-color:#e8e3d8 !important; border-radius:20px !important; box-shadow:0 18px 48px rgba(45,62,51,.1) !important; }
+    @media (max-width:700px) { .content { padding-top:18px !important; } .hero-banner { border-radius:16px !important; } }
+  </style>
   <meta name="theme-color" content="#315f50">
   <link rel="icon" type="image/svg+xml" href="icon.svg?v=2">
   <title>لوحة الإدارة | منظومة الهدى</title>
@@ -27,29 +48,29 @@
       --font-num: 'IBM Plex Sans Arabic', 'Cairo', monospace;
 
       /* خلفية العمل واللوحات */
-      --canvas: #F4F6F9;
-      --paper: #FFFFFF;
-      --card-bg: #FFFFFF;
-      --line: #E2E8F0;
-      --line-strong: #CBD5E1;
+      --canvas: #F7F5EF;
+      --paper: #FFFEFA;
+      --card-bg: #FFFEFA;
+      --line: #E8E3D8;
+      --line-strong: #D8D0C2;
 
       /* نصوص فائقة التباين والوضوح التام */
-      --ink: #0F172A;
-      --text-main: #0F172A;
-      --text-body: #334155;
-      --text-muted: #64748B;
-      --muted: #64748B;
+      --ink: #263B34;
+      --text-main: #263B34;
+      --text-body: #45564F;
+      --text-muted: #77847C;
+      --muted: #77847C;
 
       /* الألوان الإدارية الملكية الراقية */
-      --brand: #1E40AF;
-      --brand-dark: #0F172A;
-      --brand-hover: #1D4ED8;
-      --brand-soft: #EFF6FF;
+      --brand: #315F50;
+      --brand-dark: #24483D;
+      --brand-hover: #254D41;
+      --brand-soft: #EDF4EF;
 
       /* لمسة ذهبية وقورة وهادئة */
-      --gold: #B45309;
-      --gold-soft: #FEF3C7;
-      --gold-text: #92400E;
+      --gold: #A77D45;
+      --gold-soft: #F7F0E4;
+      --gold-text: #806137;
 
       /* الألوان المالية المريحة */
       --green: #047857;
@@ -58,8 +79,8 @@
       --red-soft: #FEF2F2;
 
       /* الشريط الجانبي */
-      --sidebar-bg: #0F172A;
-      --sidebar-border: #1E293B;
+      --sidebar-bg: #24483D;
+      --sidebar-border: #315F50;
 
       /* الظلال الناعمة */
       --shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
