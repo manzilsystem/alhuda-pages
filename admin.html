@@ -2251,7 +2251,7 @@
           const apartmentExpenses = (data.expenses || []).filter((item) => String(item.apartmentNo || item.apartmentNumber || '') === String(apartment.number) && item.status !== 'voided').map((item) => ({ date: item.date || item.createdAt || '', amount: Number(item.amount) || 0, description: String(item.description || item.note || ''), fundType: String(item.fundType || '') })).sort((a, b) => String(b.date).localeCompare(String(a.date)));
           const payload = {
             generatedAt: new Date().toISOString(),
-            apartment: { number: unitNumber, floor: Number(apartment.floor) || Math.ceil(Number(apartment.number) / 2), ownerName: String(apartment.ownerName || ''), tenantName: apartment.role === 'مستأجر' ? String(apartment.tenantName || '') : '', role: String(apartment.role || ''), monthlyFee: apartment.monthlyFee === null || apartment.monthlyFee === undefined ? null : Number(apartment.monthlyFee), startMonth: String(apartment.startMonth || ''), active: apartment.active !== false },
+            apartment: { number: unitNumber, floor: Number(apartment.floor) || Math.ceil(Number(apartment.number) / 2), ownerName: String(apartment.ownerName || ''), tenantName: apartment.role === 'مستأجر' ? String(apartment.tenantName || '') : '', role: String(apartment.role || ''), monthlyFee: apartment.monthlyFee === null || apartment.monthlyFee === undefined || apartment.monthlyFee === '' ? Number(data.fee) || 0 : Number(apartment.monthlyFee), startMonth: String(apartment.startMonth || ''), active: apartment.active !== false },
             receipts, apartmentExpenses, building: accounts
           };
           const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(payload)));
