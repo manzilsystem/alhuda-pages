@@ -152,6 +152,10 @@
     .unit-card { cursor:pointer; }
     .unit-card:focus-visible { outline:3px solid #315f50; outline-offset:3px; }
   </style>
+  <style id="unit-name-cards">
+    .unit-person-list { display:grid; gap:2px; width:100%; margin-top:8px; }
+    .unit-person { color:var(--ink-soft); font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">انتقل إلى المحتوى</a>
@@ -208,19 +212,19 @@
     </section>
     <section class="section" id="units">
       <div class="wrap">
-        <div class="section-head"><div><h2>شقق البرج</h2><p>اختر رقم الشقة لعرض رقمها ودورها فقط. أسماء السكان غير ظاهرة في الموقع العام.</p></div><span class="unit-count">٢٢ شقة</span></div>
+        <div class="section-head"><div><h2>شقق البرج</h2><p>تُحدّث أسماء الملاك والمستأجرين من لوحة الإدارة وتظهر هنا للزوار.</p></div><span class="unit-count">٢٢ شقة</span></div>
         <div class="unit-grid" id="unitGrid" aria-label="بطاقات الشقق"></div>
         <dialog class="unit-dialog" id="unitDialog" aria-labelledby="unitDialogTitle">
           <button class="dialog-close" id="unitDialogClose" type="button" aria-label="إغلاق">×</button>
           <span class="dialog-kicker">بوابة الملاك</span>
           <h3 id="unitDialogTitle">بوابة الشقة</h3>
-          <p>هذه صفحة عامة للتعريف بالشقق فقط، وليست بوابة دخول للبيانات الخاصة. لا تُصدر رموزًا ولا ترسل رسائل واتساب.</p>
-          <p class="dialog-note">أسماء الملاك والمستأجرين وأرقام هواتفهم تبقى في الخزانة الخاصة وتظهر للمدير داخل لوحة الإدارة فقط.</p>
+          <p>هذه الصفحة تعرض بيانات تعريفية عامة فقط، وليست بوابة دخول للحسابات أو التفاصيل المالية.</p>
+          <p class="dialog-note">هذه البطاقة تعرض بيانات تعريفية يختار المدير نشرها. أرقام الهواتف والأرصدة والتفاصيل المالية لا تظهر هنا.</p>
           <div class="hero-links dialog-actions"><button class="button button-secondary" id="unitDialogDone" type="button">إغلاق</button></div>
         </dialog>
         <aside class="privacy-note" id="privacy">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.7 8 7 10 4.3-2 7-5.5 7-10V6l-7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6m-3-3v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-          <div><strong>خصوصيتكم مهمة</strong><p>أسماء الملاك والمستأجرين وأرقام هواتفهم وأرصدتهم لا تُعرض في الموقع العام. تُدار بياناتهم في الخزانة الخاصة من لوحة المدير فقط.</p></div>
+          <div><strong>خصوصيتكم مهمة</strong><p>أسماء الملاك والمستأجرين تظهر في البطاقات بناءً على بيانات المدير، وهي متاحة لكل زائر للموقع. لا نعرض أرقام الهواتف أو الأرصدة أو البيانات المالية.</p></div>
         </aside>
       </div>
     </section>
@@ -235,9 +239,11 @@
         const unitNumber = String((floor - 1) * 2 + position).padStart(2, '0');
         const card = document.createElement('button');
         card.className = 'unit-card';
+        card.dataset.unitNumber = unitNumber;
         card.type = 'button';
         card.setAttribute('aria-label', `شقة ${unitNumber}، الدور ${floor.toLocaleString('ar-EG')}`);
         card.innerHTML = `<span class="unit-card-top"><span class="unit-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 21V4h12v17M4 4h16M9 7h2v2H9zM14 7h2v2h-2zM9 12h2v2H9zM14 12h2v2h-2zM10 21v-3a2 2 0 0 1 4 0v3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span class="unit-arrow" aria-hidden="true">↗</span></span><span class="unit-label">الشقة</span><strong class="unit-number">${unitNumber}</strong><span class="unit-floor">الدور ${floor.toLocaleString('ar-EG')}</span>`;
+        const personList = document.createElement('span'); personList.className = 'unit-person-list'; card.append(personList);
         card.addEventListener('click', () => {
           unitDialogTitle.textContent = `بوابة الشقة ${unitNumber}`;
           if (typeof unitDialog.showModal === 'function') unitDialog.showModal();
@@ -246,6 +252,27 @@
         unitGrid.append(card);
       }
     }
+    fetch('public-directory.json?v=' + Date.now(), { cache: 'no-store' })
+      .then((response) => response.ok ? response.json() : null)
+      .then((directory) => {
+        const units = new Map((directory && directory.units || []).map((unit) => [String(unit.number).padStart(2, '0'), unit]));
+        unitGrid.querySelectorAll('.unit-card').forEach((card) => {
+          const unit = units.get(card.dataset.unitNumber);
+          if (!unit) return;
+          const list = card.querySelector('.unit-person-list');
+          const names = [];
+          if (unit.ownerName) names.push(['المالك', unit.ownerName]);
+          if (unit.tenantName) names.push(['المستأجر', unit.tenantName]);
+          names.forEach(([label, name]) => {
+            const line = document.createElement('span');
+            line.className = 'unit-person';
+            line.textContent = label + ': ' + name;
+            list.append(line);
+          });
+          if (names.length) card.setAttribute('aria-label', 'الشقة ' + card.dataset.unitNumber + '، ' + names.map((item) => item[0] + ' ' + item[1]).join('، '));
+        });
+      })
+      .catch(() => {});
     function closeUnitDialog() {
       if (typeof unitDialog.close === 'function') unitDialog.close();
       else unitDialog.removeAttribute('open');
