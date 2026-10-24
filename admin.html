@@ -1504,6 +1504,25 @@
   <!-- ♦ هوية بصرية جديدة: منظومة الهدى — Midnight Violet + Amber Edition ♦ -->
 
 
+  <style id="huda-admin-content-alignment">
+    .admin-scope-note { margin:0 0 16px !important; padding:13px 16px !important; border-color:#dce8df !important; background:#f0f6f1 !important; color:#42594c !important; }
+    .admin-scope-note strong { color:#24483d !important; }
+    .expense-scope-note { max-width:760px; margin:10px 0 0 !important; font-size:11px !important; line-height:1.8 !important; }
+    .cash-flow-chart { display:grid; grid-template-columns:repeat(12,minmax(42px,1fr)); align-items:end; gap:8px; min-height:180px; padding:15px 5px 2px; overflow-x:auto; border-bottom:1px solid var(--line); }
+    .flow-month { display:grid; grid-template-rows:1fr auto; gap:8px; height:155px; min-width:40px; text-align:center; }
+    .flow-bars { display:flex; align-items:end; justify-content:center; gap:4px; height:100%; border-bottom:1px solid #eee9df; background:repeating-linear-gradient(to top,transparent 0,transparent 37px,#f1eee7 38px,#f1eee7 39px); }
+    .flow-bar { display:block; width:12px; min-height:0; border-radius:5px 5px 0 0; transition:height .2s ease; }
+    .flow-bar.inflow,.chart-key.inflow { background:#4f8069; }
+    .flow-bar.outflow,.chart-key.outflow { background:#c17c68; }
+    .flow-month-label { color:var(--text-muted); font-size:10px; white-space:nowrap; }
+    .chart-legend { display:flex; gap:18px; justify-content:center; padding-top:12px; color:var(--text-muted); font-size:11px; }
+    .chart-legend span { display:inline-flex; align-items:center; gap:7px; }
+    .chart-key { display:inline-block; width:10px; height:10px; border-radius:3px; }
+    .mobile-balance-card { background:radial-gradient(ellipse at top left,rgba(167,125,69,.2),transparent 45%),linear-gradient(120deg,#24483d,#315f50) !important; box-shadow:0 12px 28px rgba(36,72,61,.14) !important; }
+    .top { background:rgba(255,254,250,.97) !important; border-color:var(--line) !important; box-shadow:0 2px 10px rgba(45,62,51,.06) !important; }
+    @media(max-width:899px) { .top { background:rgba(36,72,61,.97) !important; border-color:rgba(255,255,255,.12) !important; } .top-building strong,#pageTitle,.top p { color:#fff !important; } .cash-flow-chart { grid-template-columns:repeat(12,minmax(38px,1fr)); gap:5px; } }
+    @media(max-width:520px) { .admin-scope-note { font-size:11px !important; } .cash-flow-chart { padding-inline:0; } }
+  </style>
 </head>
 <body>
   <div class="shell min-h-screen bg-stone-50">
@@ -1549,8 +1568,8 @@
         <button data-page="expenses"><span class="nav-glyph">04</span><span class="nav-label">المصروفات</span></button>
         <button data-page="overdue"><span class="nav-glyph">05</span><span class="nav-label">متابعة الاشتراكات</span></button>
         <button data-page="reports"><span class="nav-glyph">06</span><span class="nav-label">التقارير المالية</span></button>
-        <button data-page="annual"><span class="nav-glyph">08</span><span class="nav-label">التقرير السنوي الشامل</span></button>
-        <button data-page="settings" class="admin-only" hidden><span class="nav-glyph">07</span><span class="nav-label">إعدادات المنظومة</span></button>
+        <button data-page="annual"><span class="nav-glyph">07</span><span class="nav-label">التقرير السنوي الشامل</span></button>
+        <button data-page="settings" class="admin-only" hidden><span class="nav-glyph">08</span><span class="nav-label">إعدادات المنظومة</span></button>
       </nav>
       <div class="policy"><span class="policy-label">المبدأ المحاسبي</span><strong>الأساس النقدي</strong><span>الوارد عند القبض، والمنصرف عند الدفع. التحويل بين الخزائن لا يُحسب دخلًا.</span></div>
     </aside>
@@ -1593,14 +1612,15 @@
       </header>
       <main class="content">
         <section id="page-overview" class="page active">
-          <!-- كارت الرصيد البنكي الرئيسي الفخم (InstaPay / Mobile Banking Card) -->
+          <div class="notice admin-scope-note"><strong>لوحة المدير فقط:</strong> تسجّل بيانات الملاك والمقيمين والاشتراكات والإيرادات والمصروفات والإيصالات. لا يوجد دخول ذاتي للملاك أو المستأجرين، ولا إصدار رموز أو إرسال واتساب في هذا الإصدار.</div>
+          <!-- ملخص رصيد صناديق البرج -->
           <div class="mobile-balance-card">
             <div class="balance-card-header">
               <div class="balance-brand-chip">
                 <span class="pulse-dot"></span>
                 <span>الرصيد المتاح بالخزينة</span>
               </div>
-              <span class="vault-count">3 خزائن سحابية</span>
+              <span class="vault-count">٢٢ شقة · ١١ دورًا</span>
             </div>
 
             <div class="balance-amount-display" id="totalClosingDisplay">
@@ -1612,7 +1632,7 @@
               <!-- يتم تحديثها تلقائياً -->
             </div>
 
-            <!-- الزران الرئيسيان للإجراءات السريعة -->
+            <!-- إجراءات الإدارة السريعة -->
             <div class="balance-actions-row">
               <button class="mobile-action-btn deposit admin-only" type="button" data-action="collection">
                 <span class="action-icon">↓</span>
@@ -1632,7 +1652,7 @@
           <!-- دائرة الخدمات السريعة (Quick Circular Action Hub) -->
           <div class="quick-hub-section">
             <div class="section-title-row">
-              <h3>الخدمات والعمليات السريعة</h3>
+              <h3>انتقال سريع إلى أقسام الإدارة</h3>
             </div>
             <div class="quick-circles-grid">
               <button class="quick-circle-item" type="button" data-page="apartments">
@@ -1654,7 +1674,7 @@
             </div>
           </div>
 
-          <!-- بطاقة ملخص الشهر البنكية -->
+          <!-- ملخص الحركة المالية للشهر -->
           <div class="monthly-flow-card">
             <div class="flow-card-head">
               <h4>حركة الشهر الحالية</h4>
@@ -1663,7 +1683,7 @@
             <div class="flow-metrics-row" id="monthCards"></div>
           </div>
 
-          <!-- سجل المعاملات البنكية الحديثة (Recent Activity Feed) -->
+          <!-- سجل الحركات المالية الأخيرة -->
           <div class="recent-feed-section">
             <div class="feed-header-row">
               <div>
@@ -1693,8 +1713,8 @@
           <section class="panel"><div class="panel-head"><div><h3>سجل التحصيلات</h3><p>يعرض الساكن والشقة والصندوق والفترة المغطاة متى كانت البيانات مسجلة.</p></div><div class="filters" style="display:flex;gap:8px;flex-wrap:wrap;"><input id="collectionFilter" class="input" placeholder="بحث برقم الإيصال أو الشقة أو اسم الساكن" aria-label="بحث في التحصيلات"><input id="collectionMonthFilter" class="input month-select" type="month" aria-label="تصفية بالشهر" title="تصفية بالشهر"><button class="button quiet" id="clearCollectionFilter" type="button" title="مسح التصفية">الكل</button></div></div><div class="table-wrap"><table><thead><tr><th>رقم الإيصال</th><th>تاريخ القبض</th><th>نوع المقبوض</th><th>الشقة</th><th>اسم الساكن / البيان</th><th>الفترة المغطاة</th><th>طريقة القبض</th><th>الصندوق</th><th>المبلغ المقبوض</th><th>الإيصال</th></tr></thead><tbody id="collectionRows"></tbody></table></div></section>
         </section>
         <section id="page-expenses" class="page">
-          <div class="page-heading"><div><span class="section-kicker">تسجيل المبالغ المدفوعة</span><h2>المصروفات</h2><p>سجّل المصروف وقت الدفع الفعلي فقط.</p></div><button class="button primary admin-only" type="button" data-action="expense">تسجيل مصاريف مدفوع</button></div>
-          <section class="panel"><div class="panel-head"><div><h3>سجل المصروفات المدفوعة</h3><p>سندات صرف معتمدة وموثقة إلكترونياً</p></div><div class="filters" style="display:flex;gap:8px;flex-wrap:wrap;"><input id="expenseFilter" class="input" placeholder="بحث في البيان أو التصنيف" aria-label="بحث في المصروفات" style="max-width:220px"><input id="expenseMonthFilter" class="input month-select" type="month" aria-label="تصفية بالشهر"><button class="button quiet" id="clearExpenseFilter" type="button">الكل</button></div></div><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>التصنيف</th><th>البيان</th><th>الخزينة</th><th>المبلغ المدفوع</th><th>سند الصرف</th></tr></thead><tbody id="expenseRows"></tbody></table></div></section>
+          <div class="page-heading"><div><span class="section-kicker">تسجيل المبالغ المدفوعة</span><h2>المصروفات</h2><p>سجّل ما دُفع فعلًا من أحد صناديق البرج.</p><div class="notice expense-scope-note">مصروف يدفعه المالك من ماله الشخصي وتسويته مع الاشتراك غير مدعومان هنا. لا تسجّله كمصروف من صندوق البرج؛ فهذا سيُظهر رصيدًا نقديًا غير صحيح.</div></div><button class="button primary admin-only" type="button" data-action="expense">تسجيل مصروف مدفوع</button></div>
+          <section class="panel"><div class="panel-head"><div><h3>سجل المصروفات المدفوعة</h3><p>سند صرف قابل للطباعة ومحفوظ مع الحركة المشفّرة.</p></div><div class="filters" style="display:flex;gap:8px;flex-wrap:wrap;"><input id="expenseFilter" class="input" placeholder="بحث في البيان أو التصنيف" aria-label="بحث في المصروفات" style="max-width:220px"><input id="expenseMonthFilter" class="input month-select" type="month" aria-label="تصفية بالشهر"><button class="button quiet" id="clearExpenseFilter" type="button">الكل</button></div></div><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>التصنيف</th><th>البيان</th><th>الخزينة</th><th>المبلغ المدفوع</th><th>سند الصرف</th></tr></thead><tbody id="expenseRows"></tbody></table></div></section>
         </section>
         <section id="page-overdue" class="page">
           <div class="page-heading"><div><span class="section-kicker">متابعة تشغيلية</span><h2>متابعة اشتراكات الشقق السكنية</h2><p>المتبقي متابعة فقط؛ لا يُسجل ذمة أو إيرادًا غير مقبوض.</p></div><div class="filters"><label for="overdueMonth" class="muted">الشهر المستحق</label><input id="overdueMonth" class="input month-select" type="month"><button class="button primary admin-only" id="settleCreditsButton" type="button">تسوية المقدمات حتى الشهر</button><span class="muted admin-only">التسوية يدوية من المدير.</span></div></div>
@@ -1708,7 +1728,7 @@
           <div class="report-print-header"><strong>برج الهدى السكني — التقرير المالي</strong><span id="reportPrintPeriod"></span><small>الأساس النقدي: التحصيل عند القبض، والمصروف عند الدفع. التحويلات الداخلية لا تُعد دخلًا أو مصروفًا.</small></div>
           <div class="cards" id="reportCards"></div>
           <section class="panel"><div class="panel-head"><div><h3>تفاصيل حركات الشهر</h3><p id="reportTransactionsCaption">كل قبض أو دفع مسجل في الشهر المختار، مع المرجع والصندوق وبيانات الشقة.</p></div></div><div class="table-wrap"><table><thead><tr><th>التاريخ</th><th>الحركة</th><th>التصنيف</th><th>الشقة</th><th>الساكن / البيان</th><th>التغطية</th><th>الصندوق / الطريقة</th><th>رقم الإيصال / المرجع</th><th>المبلغ</th></tr></thead><tbody id="reportTransactionRows"></tbody></table></div></section>
-          <section class="panel"><div class="panel-head"><div><h3>التحصيلات والمصروفات الفعلية</h3><p>يعرض جدول التدفق النقدي بالأسفل مبالغ القبض والدفع الفعليين.</p></div></div><p id="chartFallback" class="muted">الرسم البياني غير مفعّل في نسخة GitHub فقط.</p></section>
+          <section class="panel"><div class="panel-head"><div><h3>المقبوض والمدفوع شهريًا</h3><p id="cashFlowChartCaption">مقارنة الحركة النقدية خلال السنة المختارة في التقرير.</p></div></div><div id="cashFlowChart" class="cash-flow-chart" role="list" aria-label="مقارنة المقبوض والمدفوع حسب الشهر"></div><div class="chart-legend"><span><i class="chart-key inflow"></i>مقبوض فعلي</span><span><i class="chart-key outflow"></i>مدفوع فعلي</span></div></section>
           <section class="panel"><div class="panel-head"><div><h3>ملخص التدفق النقدي عبر الشهور</h3><p>كل الشهور التي بها حركات، مرتبة من الأحدث؛ حسب يوم القبض أو الدفع الفعلي.</p></div></div><div class="table-wrap"><table><thead><tr><th>الشهر</th><th>التحصيلات</th><th>المدفوعات</th><th>صافي الحركة</th></tr></thead><tbody id="monthlyRows"></tbody></table></div></section>
           <section class="panel"><div class="panel-head"><div><h3>تحليل التحصيلات والمدفوعات</h3><p id="breakdownMonthLabel">تفصيل الشهر المحدد حسب نوع الحركة.</p></div></div><div class="table-wrap"><table><thead><tr><th>نوع الحركة</th><th>التصنيف</th><th>عدد الحركات</th><th>الإجمالي</th></tr></thead><tbody id="categoryRows"></tbody></table></div></section>
           <section class="panel"><div class="panel-head"><div><h3>أرصدة وحركة الخزائن</h3><p>الأرصدة المعروضة حالية وقت فتح التقرير؛ التحويلات مفصولة عن التحصيلات والمدفوعات.</p></div></div><div class="table-wrap"><table><thead><tr><th>الخزينة</th><th>رصيد أول المدة</th><th>مقبوض فعلي</th><th>مدفوع فعلي</th><th>تحويلات واردة</th><th>تحويلات صادرة</th><th>الرصيد الحالي</th></tr></thead><tbody id="accountRows"></tbody></table></div></section>
@@ -1735,7 +1755,7 @@
           <div class="cards" id="annualSummaryCards"></div>
           <section class="panel">
             <div class="panel-head">
-              <div><h3>ملخص شهري مقارن — السنة المختارة</h3><p>كل شهر: التحصيلات ← المصروفات ← صافي الحركة ← الرصيد التراكمي</p></div>
+              <div><h3>ملخص شهري مقارن — السنة المختارة</h3><p>كل شهر: المقبوض ← المدفوع ← صافي الحركة ← الرصيد التراكمي. *النسبة من اشتراكات الشقق فقط؛ المقدمات قد ترفعها فوق 100%.</p></div>
             </div>
             <div class="table-wrap">
               <table>
@@ -1747,7 +1767,7 @@
                     <th>صافي الحركة</th>
                     <th>الرصيد التراكمي</th>
                     <th>عدد الإيصالات</th>
-                    <th>نسبة التحصيل</th>
+                    <th>نسبة المقبوض من الاشتراكات*</th>
                   </tr>
                 </thead>
                 <tbody id="annualRows"></tbody>
@@ -1790,24 +1810,24 @@
             <div class="panel">
               <div class="panel-head">
                 <div>
-                  <h3 style="color:#0f383b;">🔐 تغيير رمز مرور المدير (PIN)</h3>
-              <p>تغيير عبارة المرور التي تُشتق منها مفاتيح تشفير الخزانة في مستودع GitHub الخاص</p>
+                  <h3>🔐 تغيير عبارة مرور الخزانة</h3>
+              <p>تُستخدم لاشتقاق مفتاح التشفير. احفظها بأمان؛ لا يمكن فتح الخزانة دونها.</p>
                 </div>
               </div>
               <form id="changePinForm" style="padding:16px;">
                 <div class="field" style="margin-bottom:12px;">
-                  <label for="currentPinInput">رمز المرور الحالي</label>
+                  <label for="currentPinInput">عبارة المرور الحالية</label>
                   <input class="input" id="currentPinInput" type="password" required autocomplete="current-password" placeholder="أدخل الرمز الحالي">
                 </div>
                 <div class="field" style="margin-bottom:12px;">
-                  <label for="newPinInput">الرمز الجديد</label>
+                  <label for="newPinInput">عبارة المرور الجديدة (16 حرفًا أو أكثر)</label>
                   <input class="input" id="newPinInput" type="password" minlength="16" required autocomplete="off" placeholder="16 حرفًا على الأقل">
                 </div>
                 <div class="field" style="margin-bottom:16px;">
-                  <label for="confirmPinInput">تأكيد الرمز الجديد</label>
-                  <input class="input" id="confirmPinInput" type="password" minlength="12" required autocomplete="new-password" placeholder="أعد كتابة عبارة المرور الجديدة">
+                  <label for="confirmPinInput">تأكيد عبارة المرور الجديدة</label>
+                  <input class="input" id="confirmPinInput" type="password" minlength="16" required autocomplete="new-password" placeholder="أعد كتابة عبارة المرور الجديدة">
                 </div>
-                <button class="button primary" style="width:100%;" type="submit">حفظ وتحديث رمز المرور</button>
+                <button class="button primary" style="width:100%;" type="submit">تغيير العبارة وإعادة تشفير الخزانة</button>
               </form>
             </div>
 
@@ -1815,22 +1835,14 @@
             <div class="panel">
               <div class="panel-head">
                 <div>
-                  <h3 style="color:#0f383b;">🏢 بيانات البرج والدفع الإلكتروني</h3>
-                  <p>اسم البرج وحسابات إنستاباي وفودافون كاش للتذكيرات</p>
+                  <h3>🏢 بيانات البرج</h3>
+                  <p>اسم العقار الذي يظهر في التقارير والإيصالات.</p>
                 </div>
               </div>
               <form id="generalSettingsForm" style="padding:16px;">
                 <div class="field" style="margin-bottom:12px;">
                   <label for="setBuildingName">اسم البرج / العقار</label>
                   <input class="input" id="setBuildingName" type="text" required placeholder="برج الهدى السكني">
-                </div>
-                <div class="field" style="margin-bottom:12px;">
-                  <label for="setInstaPay">عنوان الدفع إنستاباي (InstaPay Handle / Link)</label>
-                  <input class="input" id="setInstaPay" type="text" placeholder="مثال: instapay.me/alhuda أو اسم الحساب">
-                </div>
-                <div class="field" style="margin-bottom:16px;">
-                  <label for="setVodafoneCash">رقم محفظة فودافون كاش / المحافظ الإلكترونية</label>
-                  <input class="input" id="setVodafoneCash" type="tel" placeholder="010XXXXXXXX">
                 </div>
                 <button class="button primary" style="width:100%;" type="submit">حفظ إعدادات البرج</button>
               </form>
@@ -1992,7 +2004,7 @@
   <text x="32" y="37.5" text-anchor="middle" font-family="'Cairo','Tajawal',sans-serif" font-size="11" font-weight="900" fill="url(#cGoldGrad)" letter-spacing="0.5" filter="url(#cSoftGlow)">الهدى</text>
   <polygon points="32,3 34,8 39,9 35,12 36,17 32,14 28,17 29,12 25,9 30,8" fill="url(#cGoldGrad)" filter="url(#cSoftGlow)"/>
   <rect x="13" y="55" width="38" height="3" rx="1.5" fill="url(#cGoldGrad)"/>
-</svg><span><strong>منظومة الهدى</strong><small>الإدارة المالية والحسابات</small></span></div><p class="muted">أنشئ مستودعًا خاصًا باسم alhuda-vault. أنشئ رمز وصول دقيقًا لهذا المستودع بصلاحية Contents: Read and write فقط. أدخل الرمز هنا كل مرة؛ لا يُحفظ في المتصفح. أول مرة: استخدم عبارة مرور قوية من 16 حرفًا على الأقل.</p><div class="form-grid"><div class="field"><label for="githubOwner">حساب GitHub</label><input class="input" id="githubOwner" value="manzilsystem" autocomplete="off" required></div><div class="field"><label for="githubRepo">مستودع البيانات الخاص</label><input class="input" id="githubRepo" value="alhuda-vault" autocomplete="off" required></div><div class="field wide"><label for="githubToken">رمز GitHub محدود لهذا المستودع</label><input class="input" id="githubToken" type="password" autocomplete="off" required></div></div><div class="field"><label for="adminPin">عبارة مرور تشفير الخزانة</label><input class="input" id="adminPin" type="password" minlength="16" autocomplete="off" required></div><div class="notice error" id="loginError" hidden></div><div class="field" id="newPinFields" hidden><label for="newAdminPin">عبارة مرور جديدة (16 حرفًا أو أكثر)</label><input class="input" id="newAdminPin" type="password" minlength="16" autocomplete="off"><label for="confirmAdminPin">تأكيد العبارة الجديدة</label><input class="input" id="confirmAdminPin" type="password" minlength="16" autocomplete="off"></div><div class="form-actions"><button class="button primary" id="loginSubmit" type="submit">اتصال وفتح الخزانة</button><button class="button" type="button" data-close>إلغاء</button></div></div></form></div>
+</svg><span><strong>منظومة الهدى</strong><small>الإدارة المالية والحسابات</small></span></div><p class="muted">هذه لوحة المدير؛ لا تتيح دخولًا ذاتيًا للملاك أو المستأجرين ولا ترسل رسائل أو رموز واتساب. تُحفظ بيانات الخزانة مشفّرة في مستودع خاص. أدخل رمز GitHub المحدود لهذه الخزانة وعبارة مرور قوية من 16 حرفًا أو أكثر. يبقى الرمز في ذاكرة الصفحة أثناء الجلسة فقط.</p><div class="form-grid"><div class="field"><label for="githubOwner">حساب GitHub</label><input class="input" id="githubOwner" value="manzilsystem" autocomplete="off" required></div><div class="field"><label for="githubRepo">مستودع البيانات الخاص</label><input class="input" id="githubRepo" value="alhuda-vault" autocomplete="off" required></div><div class="field wide"><label for="githubToken">رمز GitHub محدود لهذا المستودع</label><input class="input" id="githubToken" type="password" autocomplete="off" required></div></div><div class="field"><label for="adminPin">عبارة مرور تشفير الخزانة</label><input class="input" id="adminPin" type="password" minlength="16" autocomplete="off" required></div><div class="notice error" id="loginError" hidden></div><div class="field" id="newPinFields" hidden><label for="newAdminPin">عبارة مرور جديدة (16 حرفًا أو أكثر)</label><input class="input" id="newAdminPin" type="password" minlength="16" autocomplete="off"><label for="confirmAdminPin">تأكيد العبارة الجديدة</label><input class="input" id="confirmAdminPin" type="password" minlength="16" autocomplete="off"></div><div class="form-actions"><button class="button primary" id="loginSubmit" type="submit">اتصال وفتح الخزانة</button><button class="button" type="button" data-close>إلغاء</button></div></div></form></div>
 
   <div class="gate" id="cloudGate"><div class="gate-card"><h2>تعذر فتح التطبيق</h2><p id="gateMessage">اتصل بالإنترنت، ثم أدخل رمز GitHub المحدود لفتح الخزانة الخاصة.</p><div class="actions"><button class="button primary" id="retryLoad">إعادة المحاولة</button></div></div></div>
   <div id="busy" role="status" aria-busy="false"><div class="busy-card"><span class="busy-spinner" aria-hidden="true"></span><div class="busy-copy"><strong id="busyText">جارٍ تحميل البيانات…</strong><p id="busyElapsed" aria-live="off">بدأت العملية للتو.</p><p id="busyHint" aria-live="polite">يرجى الانتظار، ولا تضغط مرة أخرى.</p></div></div></div><div id="toast" role="status" aria-live="polite"></div>
@@ -2347,9 +2359,7 @@
       function renderSettingsPage() {
         if (!state.data) return;
         if ($('setBuildingName')) $('setBuildingName').value = state.data.buildingName || 'برج الهدى السكني';
-        if ($('setInstaPay')) $('setInstaPay').value = state.data.instapayHandle || 'instapay.me/alhuda';
-        if ($('setVodafoneCash')) $('setVodafoneCash').value = state.data.vodafoneCash || '';
-        if ($('setOpeningOperating')) $('setOpeningOperating').value = Number(state.data.openingBalance) || 0;
+        if (if (if ($('setOpeningOperating')) $('setOpeningOperating').value = Number(state.data.openingBalance) || 0;
         if ($('setOpeningFund')) $('setOpeningFund').value = Number(state.data.openingFundBalance) || 0;
         if ($('setOpeningEmergency')) $('setOpeningEmergency').value = Number(state.data.openingEmergencyFundBalance) || 0;
 
@@ -2408,7 +2418,7 @@
         const monthRows = months.map((m) => {
           const mIn = inflows.filter((e) => String(e.date).startsWith(m)).reduce((s, e) => s + Number(e.amount), 0);
           const mOut = outflows.filter((e) => String(e.date).startsWith(m)).reduce((s, e) => s + Number(e.amount), 0);
-          const mCount = (state.data.payments || []).filter((p) => p.status !== 'voided' && String(p.date).startsWith(m)).length;
+          const mCount = getCashEntries().filter((entry) => entry.kind === 'in' && String(entry.date).startsWith(m)).length;
           const net = mIn - mOut;
           runningBalance += net;
           totalIn += mIn;
@@ -2422,7 +2432,7 @@
               const f = a.monthlyFee != null && a.monthlyFee !== '' ? Number(a.monthlyFee) : Number(state.data.fee || 0);
               return s + f;
             }, 0);
-          const rate = expectedFee > 0 ? Math.round((mIn / expectedFee) * 100) : 0;
+          const subscriptionCollected = (state.data.payments || []).filter((payment) => payment.status !== 'voided' && String(payment.date).startsWith(m)).reduce((sum, payment) => sum + (Number(payment.amount) || 0), 0); const rate = expectedFee > 0 ? Math.round((subscriptionCollected / expectedFee) * 100) : 0;
           const netClass = net >= 0 ? 'positive' : 'negative';
 
           return `<tr>
@@ -2930,7 +2940,26 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
         $('receiptDialog').classList.add('open');
       }
       function printFinancialDocument() { document.body.classList.add('printing-receipt'); const reset = () => document.body.classList.remove('printing-receipt'); window.addEventListener('afterprint', reset, { once: true }); window.print(); setTimeout(reset, 1500); }
-      function renderReports() {
+      function renderCashFlowChart(year) {
+      const rows = (state.data.cashAccounting && state.data.cashAccounting.monthly) || [];
+      const byMonth = new Map(rows.map((row) => [String(row.month), row]));
+      const values = Array.from({ length: 12 }, (_, index) => {
+        const month = `${year}-${String(index + 1).padStart(2, '0')}`;
+        const row = byMonth.get(month) || {};
+        return { month, inflow: Number(row.totalInflows) || 0, outflow: Number(row.totalOutflows) || 0 };
+      });
+      const maxValue = Math.max(0, ...values.flatMap((row) => [row.inflow, row.outflow]));
+      const label = new Intl.DateTimeFormat('ar-EG', { month: 'short', timeZone: 'Africa/Cairo' });
+      $('cashFlowChartCaption').textContent = `المقبوض والمدفوع الفعلي لكل شهر في ${year}؛ قد لا تظهر الأشهر بلا حركة.`;
+      $('cashFlowChart').innerHTML = values.map((row) => {
+        const monthDate = new Date(Number(year), Number(row.month.slice(5)) - 1, 1);
+        const inHeight = maxValue ? Math.max(row.inflow ? 3 : 0, row.inflow / maxValue * 100) : 0;
+        const outHeight = maxValue ? Math.max(row.outflow ? 3 : 0, row.outflow / maxValue * 100) : 0;
+        return `<div class="flow-month" role="listitem" aria-label="${escapeHtml(monthLabel(row.month))}: مقبوض ${money(row.inflow)}، مدفوع ${money(row.outflow)}" title="مقبوض: ${money(row.inflow)} · مدفوع: ${money(row.outflow)}"><div class="flow-bars"><span class="flow-bar inflow" style="height:${inHeight}%"></span><span class="flow-bar outflow" style="height:${outHeight}%"></span></div><span class="flow-month-label">${escapeHtml(label.format(monthDate))}</span></div>`;
+      }).join('');
+    }
+
+    function renderReports() {
         if (!state.data) return;
         if (!$('reportMonth').value) $('reportMonth').value = thisMonth();
         const selected = $('reportMonth').value;
@@ -2942,7 +2971,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
         const periodEntries = getCashEntries().filter((entry) => monthKey(entry.date) === selected).sort((left, right) => String(left.date).localeCompare(String(right.date)));
         $('reportTransactionsCaption').textContent = `${periodEntries.length} حركة نقدية فعلية في ${periodLabel}. التحويلات الداخلية معروضة منفصلة ولا تدخل في الإجمالي.`;
         $('reportTransactionRows').innerHTML = periodEntries.map((entry) => { const party = entry.resident && !entry.unitNumber ? `${entry.resident} — ${entry.subject}` : entry.resident || entry.subject || entry.label || '—'; return `<tr><td>${escapeHtml(formatDocumentDate(entry.date))}</td><td><span class="badge ${entry.kind === 'in' ? 'state-paid' : 'state-pending'}">${entry.kind === 'in' ? 'قبض' : 'دفع'}</span></td><td>${escapeHtml(entry.type || 'حركة نقدية')}</td><td>${entry.unitNumber ? `شقة ${escapeHtml(entry.unitNumber)}` : '—'}</td><td>${escapeHtml(party)}${entry.notes ? `<div class="muted">${escapeHtml(entry.notes)}</div>` : ''}</td><td>${escapeHtml(entry.coverage || '—')}</td><td>${escapeHtml(entry.account || entry.method || '—')}</td><td>${escapeHtml(entry.reference || '—')}</td><td class="money ${entry.kind === 'in' ? 'positive' : 'negative'}">${money(entry.amount)}</td></tr>`; }).join('') || '<tr><td class="empty" colspan="9">لا توجد حركات قبض أو دفع مسجلة في الشهر المختار.</td></tr>';
-        const monthly = (state.data.cashAccounting && state.data.cashAccounting.monthly || []).slice().sort((a, b) => b.month.localeCompare(a.month));
+        const monthly = (state.data.cashAccounting && state.data.cashAccounting.monthly || []).slice().sort((a, b) => b.month.localeCompare(a.month)); renderCashFlowChart(selected.slice(0, 4));
         $('monthlyRows').innerHTML = monthly.map((row) => `<tr><td>${escapeHtml(monthLabel(row.month))}</td><td class="money positive">${money(row.totalInflows)}</td><td class="money negative">${money(row.totalOutflows)}</td><td class="money ${Number(row.netCashFlow) < 0 ? 'negative' : ''}">${money(row.netCashFlow)}</td></tr>`).join('') || '<tr><td class="empty" colspan="4">لا توجد تدفقات مسجلة.</td></tr>';
         $('coverageRows').innerHTML = activeApartments().map((apt) => { const fee = apt.monthlyFee === null || apt.monthlyFee === undefined || apt.monthlyFee === '' ? state.data.fee : apt.monthlyFee; return `<tr><td>${escapeHtml(apt.number)}</td><td>${escapeHtml(apt.resident || apt.ownerName || '—')}</td><td class="money">${money(fee)}</td><td>${escapeHtml(apt.paidThrough ? monthLabel(apt.paidThrough) : '—')}</td></tr>`; }).join('') || '<tr><td class="empty" colspan="4">لا توجد وحدات فعالة لعرض تغطيتها.</td></tr>';
         $('breakdownMonthLabel').textContent = `تفصيل قبض ودفع ${periodLabel} حسب تاريخ الحركة الفعلي.`;
@@ -3302,13 +3331,10 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
             e.preventDefault();
             if (!state.admin) { openLogin(); return; }
             state.data.buildingName = $('setBuildingName').value.trim();
-            state.data.instapayHandle = $('setInstaPay').value.trim();
-            state.data.vodafoneCash = $('setVodafoneCash').value.trim();
-
             setBusy(true, 'جارٍ حفظ إعدادات البرج سحابياً…');
             try {
               await saveCloudData(state.data);
-              notify('تم حفظ إعدادات البرج وطرق الدفع بنجاح!', 'success');
+              notify('تم حفظ اسم البرج بنجاح.', 'success');
               renderAll();
             } catch (err) {
               notify('تعذر حفظ الإعدادات.', 'error');
