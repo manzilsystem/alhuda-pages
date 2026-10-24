@@ -155,6 +155,8 @@
   <style id="unit-name-cards">
     .unit-person-list { display:grid; gap:2px; width:100%; margin-top:8px; }
     .unit-person { color:var(--ink-soft); font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+    .owner-code-form{display:grid;gap:8px;margin:18px 0 10px}.owner-code-form label{font-size:12px;font-weight:800}.owner-code-form .input{text-align:left;direction:ltr;letter-spacing:.08em;font-weight:700}.owner-code-form .button{width:100%}.owner-code-error{margin:10px 0;padding:10px 12px;border-radius:10px;background:#fff0ee;color:#9f352e;font-size:12px}.owner-dashboard{display:grid;gap:10px;margin-top:20px}.owner-section-head{display:flex;justify-content:space-between;align-items:end;gap:8px;margin-top:8px}.owner-section-head h4{margin:0;font-size:15px}.owner-last-updated,.owner-report-period{color:var(--muted);font-size:10px}.owner-unit-facts,.owner-totals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.owner-fact,.owner-total{padding:11px;border:1px solid var(--line);border-radius:11px;background:#fff}.owner-fact span,.owner-total span{display:block;color:var(--muted);font-size:10px}.owner-fact strong,.owner-total strong{display:block;margin-top:3px;color:var(--green-deep);font-size:14px;overflow-wrap:anywhere}.owner-total{background:#f0f4ed}.owner-table-wrap{max-width:100%;overflow:auto;border:1px solid var(--line);border-radius:11px;background:#fff}.owner-table-wrap table{width:100%;border-collapse:collapse;white-space:nowrap}.owner-table-wrap th,.owner-table-wrap td{padding:8px 9px;border-bottom:1px solid #edf0e8;text-align:right;font-size:10px}.owner-table-wrap th{background:#f3f2eb;color:#667263}.owner-table-wrap tbody tr:last-child td{border-bottom:0}.owner-empty{text-align:center;color:var(--muted)}.unit-dialog[open]{max-height:calc(100% - 24px);overflow:auto}
+    @media(max-width:520px){.owner-unit-facts,.owner-totals{grid-template-columns:1fr 1fr}.owner-section-head{align-items:start;flex-direction:column}.owner-last-updated{align-self:flex-start}}
   </style>
 </head>
 <body>
@@ -218,8 +220,20 @@
           <button class="dialog-close" id="unitDialogClose" type="button" aria-label="إغلاق">×</button>
           <span class="dialog-kicker">بوابة الملاك</span>
           <h3 id="unitDialogTitle">بوابة الشقة</h3>
-          <p>هذه الصفحة تعرض بيانات تعريفية عامة فقط، وليست بوابة دخول للحسابات أو التفاصيل المالية.</p>
-          <p class="dialog-note">هذه البطاقة تعرض بيانات تعريفية يختار المدير نشرها. أرقام الهواتف والأرصدة والتفاصيل المالية لا تظهر هنا.</p>
+          <p>أدخل كود الدخول الذي سلّمه لك المدير لعرض بيانات الشقة وسجلها المالي، مع التقرير العام للبرج.</p>
+          <form id="ownerCodeForm" class="owner-code-form"><label for="ownerCodeInput">كود دخول الشقة</label><input id="ownerCodeInput" class="input" autocomplete="one-time-code" autocapitalize="characters" required maxlength="80" placeholder="HU-…"><button class="button button-primary" type="submit">فتح بيانات الشقة</button></form>
+          <div class="owner-code-error" id="ownerCodeError" role="alert" hidden></div>
+          <section class="owner-dashboard" id="ownerDashboard" hidden>
+            <div class="owner-section-head"><div><span class="dialog-kicker">بيانات خاصة</span><h4 id="ownerUnitHeading"></h4></div><span class="owner-last-updated" id="ownerUpdatedAt"></span></div>
+            <div class="owner-unit-facts" id="ownerUnitFacts"></div>
+            <div class="owner-section-head"><div><span class="dialog-kicker">كشف الشقة</span><h4>الاشتراكات والإيصالات</h4></div></div>
+            <div class="owner-table-wrap"><table><thead><tr><th>التاريخ</th><th>الفترة</th><th>المبلغ</th><th>الإيصال</th></tr></thead><tbody id="ownerPaymentRows"></tbody></table></div>
+            <div class="owner-section-head"><div><span class="dialog-kicker">التقرير العام</span><h4>حركة خزائن البرج</h4></div></div>
+            <p class="owner-report-period">إجمالي الحركات المسجلة حتى آخر تحديث، بالجنيه المصري.</p>
+            <div class="owner-totals" id="ownerBuildingTotals"></div>
+            <div class="owner-table-wrap"><table><thead><tr><th>الخزنة</th><th>رصيد البداية</th><th>الوارد</th><th>المنصرف</th><th>الرصيد الحالي</th></tr></thead><tbody id="ownerAccountRows"></tbody></table></div>
+          </section>
+          <p class="dialog-note">البيانات المالية مشفّرة، ولا تُعرض إلا عند إدخال كود الشقة الصحيح.</p>
           <div class="hero-links dialog-actions"><button class="button button-secondary" id="unitDialogDone" type="button">إغلاق</button></div>
         </dialog>
         <aside class="privacy-note" id="privacy">
@@ -234,6 +248,52 @@
     const unitGrid = document.getElementById('unitGrid');
     const unitDialog = document.getElementById('unitDialog');
     const unitDialogTitle = document.getElementById('unitDialogTitle');
+    let selectedOwnerUnit = '';
+    const decodeOwnerBytes = (value) => Uint8Array.from(atob(value), (char) => char.charCodeAt(0));
+    const formatOwnerMoney = (value) => new Intl.NumberFormat('ar-EG', { maximumFractionDigits: 2 }).format(Number(value) || 0) + ' ج.م';
+    const safeCell = (row, value) => { const cell = document.createElement('td'); cell.textContent = String(value ?? '—'); row.append(cell); return cell; };
+    const formatOwnerDate = (value) => { if (!value) return '—'; const date = new Date(value); return Number.isNaN(date.getTime()) ? String(value) : new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeZone: 'Africa/Cairo' }).format(date); };
+    function addOwnerFact(label, value, target = 'ownerUnitFacts') { const card = document.createElement('div'); card.className = 'owner-fact'; const name = document.createElement('span'); name.textContent = label; const val = document.createElement('strong'); val.textContent = value || '—'; card.append(name, val); document.getElementById(target).append(card); }
+    function renderOwnerReport(payload) {
+      const apt = payload.apartment || {};
+      document.getElementById('ownerUnitHeading').textContent = 'الشقة ' + apt.number + ' · الدور ' + new Intl.NumberFormat('ar-EG').format(apt.floor || 0);
+      document.getElementById('ownerUpdatedAt').textContent = 'آخر تحديث: ' + formatOwnerDate(payload.generatedAt);
+      const facts = document.getElementById('ownerUnitFacts'); facts.replaceChildren();
+      addOwnerFact('المالك', apt.ownerName);
+      if (apt.tenantName) addOwnerFact('المستأجر الحالي', apt.tenantName);
+      addOwnerFact('حالة الإشغال', apt.role);
+      addOwnerFact('الاشتراك الشهري', apt.monthlyFee == null ? 'غير محدد' : formatOwnerMoney(apt.monthlyFee));
+      addOwnerFact('بداية الالتزام', apt.startMonth || '—');
+      const payments = document.getElementById('ownerPaymentRows'); payments.replaceChildren();
+      (payload.receipts || []).slice(0, 30).forEach((item) => { const row = document.createElement('tr'); safeCell(row, formatOwnerDate(item.date)); safeCell(row, item.coverStart ? item.coverStart + (item.coverEnd && item.coverEnd !== item.coverStart ? ' — ' + item.coverEnd : '') : '—'); safeCell(row, formatOwnerMoney(item.amount)); safeCell(row, item.receiptNo || '—'); payments.append(row); });
+      if (!payments.children.length) { const row = document.createElement('tr'); const cell = safeCell(row, 'لا توجد إيصالات مسجلة حتى الآن'); cell.colSpan = 4; cell.className = 'owner-empty'; payments.append(row); }
+      const building = payload.building || {}; const totals = building.totals || {};
+      const totalCards = document.getElementById('ownerBuildingTotals'); totalCards.replaceChildren();
+      [['إجمالي الوارد', totals.inflows], ['إجمالي المنصرف', totals.outflows], ['الرصيد الافتتاحي', totals.openingCash], ['الرصيد الحالي', totals.closingCash]].forEach(([label, value]) => { const card = document.createElement('div'); card.className = 'owner-total'; const name = document.createElement('span'); name.textContent = label; const amount = document.createElement('strong'); amount.textContent = formatOwnerMoney(value); card.append(name, amount); totalCards.append(card); });
+      const rows = document.getElementById('ownerAccountRows'); rows.replaceChildren();
+      (building.accounts || []).forEach((account) => { const row = document.createElement('tr'); safeCell(row, account.name); safeCell(row, formatOwnerMoney(account.opening)); safeCell(row, formatOwnerMoney(account.inflows)); safeCell(row, formatOwnerMoney(account.outflows)); safeCell(row, formatOwnerMoney(account.closing)); rows.append(row); });
+      document.getElementById('ownerDashboard').hidden = false;
+    }
+    document.getElementById('ownerCodeForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const error = document.getElementById('ownerCodeError'); error.hidden = true;
+      document.getElementById('ownerDashboard').hidden = true;
+      const code = document.getElementById('ownerCodeInput').value.trim().toUpperCase();
+      try {
+        const response = await fetch('owner-portal.json?v=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) throw new Error('بيانات بوابة الملاك غير منشورة بعد. اطلب من المدير حفظ كود الشقة.');
+        const directory = await response.json();
+        const record = (directory.units || []).find((item) => String(item.number).padStart(2, '0') === selectedOwnerUnit);
+        if (!record) throw new Error('لا يوجد كود مفعّل لهذه الشقة. تواصل مع المدير.');
+        const material = await crypto.subtle.importKey('raw', new TextEncoder().encode(code), 'PBKDF2', false, ['deriveKey']);
+        const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: decodeOwnerBytes(record.salt), iterations: 310000, hash: 'SHA-256' }, material, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+        const plaintext = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: decodeOwnerBytes(record.iv) }, key, decodeOwnerBytes(record.ciphertext));
+        renderOwnerReport(JSON.parse(new TextDecoder().decode(plaintext)));
+      } catch (cause) {
+        error.textContent = cause.message && cause.message.startsWith('لا يوجد') ? cause.message : 'الكود غير صحيح أو تعذر تحميل البيانات. راجع الكود وحاول مرة أخرى.';
+        error.hidden = false;
+      }
+    });
         for (let floor = 1; floor <= 11; floor += 1) {
       for (let position = 1; position <= 2; position += 1) {
         const unitNumber = String((floor - 1) * 2 + position).padStart(2, '0');
@@ -245,7 +305,11 @@
         card.innerHTML = `<span class="unit-card-top"><span class="unit-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 21V4h12v17M4 4h16M9 7h2v2H9zM14 7h2v2h-2zM9 12h2v2H9zM14 12h2v2h-2zM10 21v-3a2 2 0 0 1 4 0v3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span class="unit-arrow" aria-hidden="true">↗</span></span><span class="unit-label">الشقة</span><strong class="unit-number">${unitNumber}</strong><span class="unit-floor">الدور ${floor.toLocaleString('ar-EG')}</span>`;
         const personList = document.createElement('span'); personList.className = 'unit-person-list'; card.append(personList);
         card.addEventListener('click', () => {
+          selectedOwnerUnit = unitNumber;
           unitDialogTitle.textContent = `بوابة الشقة ${unitNumber}`;
+          document.getElementById('ownerCodeInput').value = '';
+          document.getElementById('ownerCodeError').hidden = true;
+          document.getElementById('ownerDashboard').hidden = true;
           if (typeof unitDialog.showModal === 'function') unitDialog.showModal();
           else unitDialog.setAttribute('open', '');
         });
