@@ -1612,7 +1612,7 @@
       </header>
       <main class="content">
         <section id="page-overview" class="page active">
-          <div class="notice admin-scope-note"><strong>لوحة المدير فقط:</strong> تسجّل بيانات الملاك والمقيمين والاشتراكات والإيرادات والمصروفات والإيصالات. لا يوجد دخول ذاتي للملاك أو المستأجرين، ولا إصدار رموز أو إرسال واتساب في هذا الإصدار.</div>
+          <div class="notice admin-scope-note"><strong>لوحة المدير فقط:</strong> تسجّل بيانات الملاك والمقيمين والاشتراكات والإيرادات والمصروفات والإيصالات. لا يوجد دخول ذاتي للملاك أو المستأجرين أو إرسال واتساب في هذا الإصدار. أسماء الملاك والمستأجرين تُنشر في البطاقات العامة؛ الهواتف والأرصدة لا تُنشر.</div>
           <!-- ملخص رصيد صناديق البرج -->
           <div class="mobile-balance-card">
             <div class="balance-card-header">
@@ -3091,7 +3091,7 @@ function apartmentMonthlyFee(apartment) { const assigned = apartment.monthlyFee;
           const result = apartmentForSave
             ? await server('saveApartmentCloud', apartmentForSave, state.sessionToken, state.revision)
             : await server('saveAllDataCloud', candidate, state.sessionToken, state.revision);
-          if (!result || !result.ok) throw new Error(result && result.error || 'رفض GitHub حفظ التعديل.'); if (result.publicDirectoryError) notify('حُفظت بيانات الإدارة، لكن لم تتحدث أسماء البطاقات. يلزم رمز GitHub بصلاحية Contents: Read and write على alhuda-pages.', 'error');
+          if (!result || !result.ok) throw new Error(result && result.error || 'رفض GitHub حفظ التعديل.'); if (result.publicDirectoryError) setTimeout(() => notify('حُفظت بيانات الإدارة، لكن لم تتحدث أسماء البطاقات. يلزم رمز GitHub بصلاحية Contents: Read and write على alhuda-pages.', 'error'), 650);
           if (apartmentForSave) {
             if (!result.apartment) throw new Error('تم الحفظ لكن لم تصل بيانات الشقة للتحقق من العرض.');
             Object.assign(apartmentForSave, result.apartment);
