@@ -41,6 +41,8 @@
     .header-nav a { color: var(--ink-soft); font-size: 13px; font-weight: 650; text-decoration: none; transition: color .18s; }
     .header-nav a:hover { color: var(--green); }
     .header-nav .nav-pill { padding: 9px 16px; border: 1px solid #d7e0d6; border-radius: 999px; background: #fffefa; color: var(--green-deep); }
+    .header-nav .admin-pill { border-color: var(--green); background: var(--green); color: #fffefa; }
+    .header-nav .admin-pill:hover { background: var(--green-deep); color: #fffefa; }
     .hero { position: relative; overflow: hidden; padding: 66px 0 58px; }
     .hero::before { position: absolute; top: -120px; left: -160px; width: 460px; height: 460px; border: 1px solid rgb(167 125 69 / 12%); border-radius: 50%; box-shadow: 0 0 0 40px rgb(167 125 69 / 3%), 0 0 0 80px rgb(167 125 69 / 2%); content: ""; pointer-events: none; }
     .hero-grid { position: relative; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(32px, 7vw, 90px); }
@@ -152,15 +154,17 @@
   <header class="site-header">
     <div class="wrap header-row">
       <a class="brand" href="#top" aria-label="بوابة ملاك منظومة الهدى — الرئيسية">
-        <svg class="brand-mark" viewBox="0 0 48 48" role="img" aria-label="شعار بوابة الهدى">
+        <svg class="brand-mark" viewBox="0 0 48 48" role="img" aria-label="برج الهدى متعدد الطوابق">
           <rect x="1" y="1" width="46" height="46" rx="15" fill="#315f50"/>
-          <path d="M10 22.5 24 11l14 11.5v15H10z" fill="none" stroke="#f7f5ef" stroke-width="1.8" stroke-linejoin="round"/>
-          <path d="M19 37.5v-9a5 5 0 0 1 10 0v9M16 22h16M24 15v3" fill="none" stroke="#d8bb83" stroke-width="1.8" stroke-linecap="round"/>
-          <circle cx="24" cy="23" r="1.6" fill="#d8bb83"/>
+          <path d="M12 39V12h24v27H12Z" fill="#fffefa" stroke="#d8bb83" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M9 13h30l-3-4H12z" fill="#d8bb83"/>
+          <path d="M16 17h4v4h-4zM28 17h4v4h-4zM16 25h4v4h-4zM28 25h4v4h-4z" fill="#315f50"/>
+          <path d="M20 39v-5a4 4 0 0 1 8 0v5" fill="#315f50" stroke="#a77d45" stroke-width="1.5"/>
         </svg>
         <span class="brand-copy"><strong>منظومة الهدى</strong><span>بوابة الملاك</span></span>
       </a>
       <nav class="header-nav" aria-label="التنقل">
+        <a class="nav-pill admin-pill" href="admin.html">دخول المدير</a>
         <a href="#units">الشقق</a>
         <a href="#privacy">الخصوصية</a>
         <a class="nav-pill" href="#units">عرض الشقق الـ٢٢ <span aria-hidden="true">←</span></a>
@@ -183,17 +187,18 @@
         <div class="architecture" aria-hidden="true">
           <div class="architecture-frame">
             <svg viewBox="0 0 360 320" fill="none">
-              <path d="M56 270V126l124-86 124 86v144H56Z" fill="#fffefa" stroke="#315f50" stroke-width="5" stroke-linejoin="round"/>
-              <path d="m38 132 142-100 142 100" stroke="#a77d45" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M143 270v-76a37 37 0 0 1 74 0v76" fill="#e9f0e9" stroke="#315f50" stroke-width="5"/>
-              <path d="M86 155h46v48H86zM228 155h46v48h-46z" fill="#f4ecdc" stroke="#c6b38e" stroke-width="4"/>
-              <path d="M86 225h36M238 225h36" stroke="#d9d4c8" stroke-width="4" stroke-linecap="round"/>
-              <path d="M177 41h6M180 28v6" stroke="#a77d45" stroke-width="3" stroke-linecap="round"/>
-              <path d="M42 274h276" stroke="#315f50" stroke-width="5" stroke-linecap="round"/>
-              <path d="M76 287h208" stroke="#d8bb83" stroke-width="3" stroke-linecap="round"/>
+              <defs><pattern id="towerFloors" width="172" height="20" patternUnits="userSpaceOnUse"><rect x="20" y="4" width="38" height="11" rx="2" fill="#e9f0e9" stroke="#c6b38e" stroke-width="1.5"/><rect x="112" y="4" width="38" height="11" rx="2" fill="#e9f0e9" stroke="#c6b38e" stroke-width="1.5"/></pattern></defs>
+              <path d="M94 50h172v222H94z" fill="#fffefa" stroke="#315f50" stroke-width="5"/>
+              <path d="M266 58h16v214h-16z" fill="#d9e4d9" stroke="#315f50" stroke-width="4"/>
+              <path d="M86 50h188l-11-15H97z" fill="#d8bb83" stroke="#a77d45" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M94 52h172v220H94z" fill="url(#towerFloors)"/>
+              <path d="M164 272v-30a16 16 0 0 1 32 0v30" fill="#315f50" stroke="#a77d45" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M85 276h205" stroke="#315f50" stroke-width="5" stroke-linecap="round"/>
+              <path d="M113 289h150" stroke="#d8bb83" stroke-width="3" stroke-linecap="round"/>
+              <path d="M168 30h24v5h-24z" fill="#315f50"/>
             </svg>
           </div>
-          <div class="arch-caption"><span class="caption-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><strong>برج الهدى</strong><small>٢٢ وحدة سكنية على ١١ دورًا</small></span></div>
+          <div class="arch-caption"><span class="caption-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 21V4h12v17M4 4h16M9 7h2v2H9zM14 7h2v2h-2zM9 12h2v2H9zM14 12h2v2h-2zM10 21v-3a2 2 0 0 1 4 0v3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span><strong>برج الهدى</strong><small>٢٢ وحدة سكنية على ١١ دورًا</small></span></div>
         </div>
       </div>
     </section>
@@ -229,7 +234,7 @@
         card.className = 'unit-card';
         card.type = 'button';
         card.setAttribute('aria-label', `شقة ${unitNumber}، الدور ${floor.toLocaleString('ar-EG')}`);
-        card.innerHTML = `<span class="unit-card-top"><span class="unit-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19h16M6 19V9l6-4 6 4v10M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="unit-arrow" aria-hidden="true">↗</span></span><span class="unit-label">الشقة</span><strong class="unit-number">${unitNumber}</strong><span class="unit-floor">الدور ${floor.toLocaleString('ar-EG')}</span>`;
+        card.innerHTML = `<span class="unit-card-top"><span class="unit-mark" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 21V4h12v17M4 4h16M9 7h2v2H9zM14 7h2v2h-2zM9 12h2v2H9zM14 12h2v2h-2zM10 21v-3a2 2 0 0 1 4 0v3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></span><span class="unit-arrow" aria-hidden="true">↗</span></span><span class="unit-label">الشقة</span><strong class="unit-number">${unitNumber}</strong><span class="unit-floor">الدور ${floor.toLocaleString('ar-EG')}</span>`;
         card.addEventListener('click', () => {
           unitDialogTitle.textContent = `بوابة الشقة ${unitNumber}`;
           const request = `السلام عليكم، أطلب رمز الوصول للشقة رقم ${unitNumber}. برجاء مطابقة رقم واتساب المُرسل مع الرقم المسجل للوحدة قبل إرسال الرمز.`;
