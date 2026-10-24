@@ -22,7 +22,7 @@ jobs:
       - name: Prepare static site
         run: |
           mkdir _site
-          cp index.html admin.html icon.svg _site/
+          cp index.html admin.html icon.svg owner-portal.json _site/
           touch _site/.nojekyll
       - uses: actions/upload-pages-artifact@v3
         with:
